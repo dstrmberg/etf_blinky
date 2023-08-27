@@ -1,0 +1,38 @@
+
+#LT Spice
+*.log
+*.raw
+
+### Atmel Studio ###
+
+.vs/
+
+[Dd]ebug/
+[Rr]elease/
+
+*.o
+*.d
+*.elf
+*.hex
+*.map
+*.sr
+
+*.atsln
+*.cproj
+*.componentinfo.xml
+
+### Altium Designer ###
+History/
+__Previews/
+*.PrjPcbStructure
+
+hardware/History/
+hardware/Project Logs for make_etf_great_again/
+hardware/Project Outputs for make_etf_great_again/
+hardware/__Previews/
+
+
+### STM32 Cube IDE ###
+
+.metadata/
+.settings/
