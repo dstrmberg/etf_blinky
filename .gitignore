@@ -36,3 +36,9 @@ hardware/__Previews/
 
 .metadata/
 .settings/
+
+### Binary stuff
+build/
+obj/
+
+premake5
