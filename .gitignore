@@ -42,3 +42,6 @@ build/
 obj/
 
 premake5
+
+## Other
+compile_flags.txt
