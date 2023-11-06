@@ -1,0 +1,4 @@
+-D
+__AVR_ATtiny44A__
+-I
+/usr/lib/avr/include
