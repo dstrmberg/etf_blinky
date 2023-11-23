@@ -45,3 +45,5 @@ premake5
 
 ## Other
 compile_flags.txt
+*.make
+Makefile

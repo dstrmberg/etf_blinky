@@ -7,6 +7,7 @@ project "Discolights"
     language "C"
     targetdir "build/%{cfg.buildcfg}"
     targetname "discolights"
+    toolset "gcc"
 
     -- set up cross compiler
     gccprefix ("avr-")
