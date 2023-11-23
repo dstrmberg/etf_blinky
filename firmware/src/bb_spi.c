@@ -1,6 +1,8 @@
 
 #include "bb_spi.h"
 
+#include <avr/io.h>
+
 #define PORT_MOSI	(PORTA)
 #define PIN_MOSI	(5)
 #define DDR_MOSI 	(DDRA)
