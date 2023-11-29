@@ -23,11 +23,9 @@ int main(void)
 	
     systemInit();
 	
-    while (1) {
-		//PORTA |= (1 << PORTA6);
-		led_send();
-		//PORTA &= ~(1 << PORTA6);
-		//_delay_ms(1);
+    while (1)
+    {
+        // Check events
 	}
 
 }
