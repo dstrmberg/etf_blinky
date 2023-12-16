@@ -1,16 +1,12 @@
 #include "scheduler.h"
 
 #include "dl_utils.h"
-#include "sys.h"
 
-#define DL_MAX_EVENTS 5
+#ifndef DL_MAX_EVENTS
+    #warning "DL_MAX_EVENTS not defined, defaults to 5"
+    #define DL_MAX_EVENTS 5
+#endif
 
-typedef void (*funcPtr)(void);
-
-typedef struct
-{
-    funcPtr eventFunc;
-} event_s;
 
 static event_s g_eventQueue[DL_MAX_EVENTS];
 static u8 g_eventToRun = 0;
@@ -24,14 +20,14 @@ void dl_schedulerInit()
     }
 }
 
-bool dl_addEvent(funcPtr func)
+bool dl_addEvent(event_s ev)
 {
     u8 status = sys_enterCritical();
     for (int i = 0; i < DL_MAX_EVENTS; i++)
     {
         if (g_eventQueue[i].eventFunc == NULL)
         {
-            g_eventQueue[i].eventFunc = func;
+            g_eventQueue[i].eventFunc = ev.eventFunc;
             sys_exitCritical(status);
             return true;
         }
@@ -41,20 +37,22 @@ bool dl_addEvent(funcPtr func)
     return false;
 }
 
-funcPtr getEvent()
+void dl_run()
 {
+    if (g_eventQueue[g_eventToRun].eventFunc == NULL) return;
+
     u8 status = sys_enterCritical();
     if (g_eventQueue[g_eventToRun].eventFunc == NULL)
     {
         sys_exitCritical(status);
-        return NULL;
+        return;
     }
 
-    funcPtr func = g_eventQueue[g_eventToRun].eventFunc;
+    event_s ev = g_eventQueue[g_eventToRun];
     g_eventToRun = (g_eventToRun + 1) % DL_MAX_EVENTS;
 
     sys_exitCritical(status);
 
-    return func;
+    ev.eventFunc();
 }
 
