@@ -36,3 +36,14 @@ hardware/__Previews/
 
 .metadata/
 .settings/
+
+### Binary stuff
+build/
+obj/
+
+premake5
+
+## Other
+compile_flags.txt
+*.make
+Makefile

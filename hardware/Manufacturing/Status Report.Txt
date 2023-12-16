@@ -1,0 +1,12 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : PCB Document [etf_blink.PcbDoc]
+   Generated File[etf_blink.TXT]
+   Generated File[etf_blink.LDP]
+   Generated File[etf_blink.DRR]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 22:48:13 On 2023-09-26
