@@ -1,5 +1,5 @@
 
-#include "dl_utils.h"
+#include "sys.h"
 #include "bb_spi.h"
 #include "adc.h"
 
@@ -12,34 +12,55 @@ volatile uint8_t red_led, green_led, blue_led, led_pos;
 volatile int8_t k;
 
 void led_send();
-static void systemInit(void);
 
 int main(void)
 {
 	k = 0;
 	led_pos = 0;
 	
-	DDRA |= (1 << PORTA6);
+	//DDRA |= (1 << PORTA6);
 	
-    systemInit();
+    sys_init();
 	
+    //sys_powerOn();
+    PORTA |= (1 << 3);
+
+    _delay_ms(5000);
+
+    //sys_powerOff();
+    PORTA &= ~(1 << 3);
+
+    while(1);
+
+    /*
     while (1)
     {
         // Check events
+        bb_spi_byte(0x00);
+        bb_spi_byte(0x00);
+        bb_spi_byte(0x00);
+        bb_spi_byte(0x00);
+        
+        bb_spi_byte(0xE0);
+        bb_spi_byte(0xFF);
+        bb_spi_byte(0x00);
+        bb_spi_byte(0xFF);
+        
+        bb_spi_byte(0xE0);
+        bb_spi_byte(0x00);
+        bb_spi_byte(0xFF);
+        bb_spi_byte(0xFF);
+        
+        bb_spi_byte(0xFF);
+        bb_spi_byte(0xFF);
+        bb_spi_byte(0xFF);
+        bb_spi_byte(0xFF);
 	}
+    */
 
 }
 
-static void systemInit(void)
-{
-	adc_init();
-	adc_interrupt_enable();
-	bb_spi_init();
-	
-    sei();
-	
-}
-
+/*
 
 void led_send()
 {
@@ -80,3 +101,5 @@ void led_send()
 	bb_spi_byte(0xFF);
 	
 }
+
+*/
