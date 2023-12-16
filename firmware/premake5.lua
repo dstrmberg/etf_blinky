@@ -23,14 +23,21 @@ project "Discolights"
         "-mmcu=attiny44a",
         "-Wall",
         "-Wextra",
-        "-pedantic"
+        "-pedantic",
+        "-O2",
+        "-g",
+    }
+
+    linkoptions
+    {
+        "-mmcu=attiny44a",
     }
 
     filter "configurations:Debug"
         defines { "DEBUG" }
-        symbols "On"
+        --symbols "On"
 
     filter "configurations:Release"
         defines { "NDEBUG" }
-        optimize "On"
+        --optimize "On"
 
