@@ -5,6 +5,7 @@
 #include "dl_utils.h"
 #include "bb_spi.h"
 #include "adc.h"
+#include "button.h"
 
 #define SYS_PWR_EN_PORT (PORTA)
 #define SYS_PWR_EN_PIN  (3)
@@ -17,7 +18,8 @@ void sys_init(void)
 	bb_spi_init();
     */
     DDRA |= (1 << SYS_PWR_EN_PIN);
-    //sei();
+	button_init();
+    sei();
 }
 
 u8 sys_enterCritical(void)

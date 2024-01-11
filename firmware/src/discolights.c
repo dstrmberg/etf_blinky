@@ -2,6 +2,7 @@
 #include "sys.h"
 #include "bb_spi.h"
 #include "adc.h"
+#include "button.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -18,17 +19,19 @@ int main(void)
 	k = 0;
 	led_pos = 0;
 	
-	//DDRA |= (1 << PORTA6);
+	DDRA |= (1 << 3);
+	PORTA |= (1 << 3);
 	
     sys_init();
 	
     //sys_powerOn();
     PORTA |= (1 << 3);
+	red_led++;
 
     _delay_ms(5000);
 
     //sys_powerOff();
-    PORTA &= ~(1 << 3);
+    //PORTA &= ~(1 << 3);
 
     while(1);
 
