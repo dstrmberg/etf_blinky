@@ -17,7 +17,7 @@ void sys_init(void)
 	adc_interrupt_enable();
 	bb_spi_init();
     */
-    DDRA |= (1 << SYS_PWR_EN_PIN);
+    sys_powerOn();
 	button_init();
     sei();
 }
@@ -36,14 +36,13 @@ void sys_exitCritical(u8 status)
 
 void sys_powerOn(void)
 {
-    //SYS_PWR_EN_PORT |= (1 << SYS_PWR_EN_PIN);
-    PORTA |= (1 << 3);
+    DDRA |= (1 << SYS_PWR_EN_PIN);
+    SYS_PWR_EN_PORT |= (1 << SYS_PWR_EN_PIN);
 }
 
 void sys_powerOff(void)
 {
-    //SYS_PWR_EN_PORT &= ~(1 << SYS_PWR_EN_PIN);
-    PORTA &= ~(1 << 3);
+    SYS_PWR_EN_PORT &= ~(1 << SYS_PWR_EN_PIN);
 }
 
 void sys_batteryCheck(void)

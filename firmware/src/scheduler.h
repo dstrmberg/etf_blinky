@@ -2,11 +2,12 @@
 
 #include "sys.h"
 
-typedef void (*funcPtr)(void);
+typedef void (*funcPtr)(u16);
 
 typedef struct
 {
     funcPtr eventFunc;
+    u16 eventData;
 } event_s;
 
 void dl_schedulerInit();

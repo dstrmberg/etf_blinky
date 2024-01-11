@@ -16,7 +16,7 @@ void dl_schedulerInit()
 {
     for (int i = 0; i < DL_MAX_EVENTS; i++)
     {
-        g_eventQueue[i].eventFunc = NULL;
+        //g_eventQueue[i].eventFunc = NULL;
     }
 }
 
@@ -49,10 +49,12 @@ void dl_run()
     }
 
     event_s ev = g_eventQueue[g_eventToRun];
+    g_eventQueue[g_eventToRun].eventFunc = NULL;
     g_eventToRun = (g_eventToRun + 1) % DL_MAX_EVENTS;
 
     sys_exitCritical(status);
 
-    ev.eventFunc();
+    ev.eventFunc(ev.eventData);
+
 }
 

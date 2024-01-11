@@ -1,4 +1,5 @@
 
+#include "scheduler.h"
 #include "sys.h"
 #include "bb_spi.h"
 #include "adc.h"
@@ -16,24 +17,26 @@ void led_send();
 
 int main(void)
 {
-	k = 0;
-	led_pos = 0;
-	
-	DDRA |= (1 << 3);
-	PORTA |= (1 << 3);
-	
+    //_delay_ms(1000);
+    
     sys_init();
+
+  //  _delay_ms(2000);
+
+//    sys_powerOff();
 	
-    //sys_powerOn();
-    PORTA |= (1 << 3);
-	red_led++;
+    dl_schedulerInit();
+    //button_init();
 
-    _delay_ms(5000);
+    while(1)
+    {
+        //dl_run();
+        if (PINA & (1 << PA7))
+        {
+            sys_powerOff();
+        }
+    }
 
-    //sys_powerOff();
-    //PORTA &= ~(1 << 3);
-
-    while(1);
 
     /*
     while (1)
