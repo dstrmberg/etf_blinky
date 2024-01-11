@@ -1,5 +1,6 @@
 Record=TopLevelDocument|FileName=make_etf_great_again.SchDoc|SheetNumber=1
-Record=SheetSymbol|SourceDocument=make_etf_great_again.SchDoc|Designator=AUDIO|SchDesignator=AUDIO|FileName=audio.SchDoc|SheetNumber=4|SymbolType=Normal|RawFileName=audio.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=SheetSymbol|SourceDocument=make_etf_great_again.SchDoc|Designator=AUDIO|SchDesignator=AUDIO|FileName=auido.SchDoc|SheetNumber=4|SymbolType=Normal|RawFileName=auido.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
 Record=SheetSymbol|SourceDocument=make_etf_great_again.SchDoc|Designator=LEDS|SchDesignator=LEDS|FileName=sk9822.SchDoc|SheetNumber=2|SymbolType=Normal|RawFileName=sk9822.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
 Record=SheetSymbol|SourceDocument=make_etf_great_again.SchDoc|Designator=U_etf_pwr|SchDesignator=U_etf_pwr|FileName=etf_pwr.SchDoc|SheetNumber=3|SymbolType=Normal|RawFileName=etf_pwr.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
 Record=SheetSymbol|SourceDocument=make_etf_great_again.SchDoc|Designator=U_mcu|SchDesignator=U_mcu|FileName=mcu.SchDoc|SheetNumber=5|SymbolType=Normal|RawFileName=mcu.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
+Record=NoMainPathDocument|SourceDocument=make_etf_great_again.SchDoc|FileName=audio.SchDoc|SheetNumber=4
