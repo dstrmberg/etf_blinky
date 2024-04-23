@@ -2,57 +2,14 @@
 FileName = etf_blink.GBR
 AutoAperture = True
 *************************************************************
-Generating : L1 - SIG/PWR
-      File : etf_blink.GTL
+Generating : Keep-Out Layer
+      File : etf_blink.GKO
 
-    Adding Layer      : L1 - SIG/PWR
-
-    Adding Layer      : Multi-Layer
+    Adding Layer      : Keep-Out Layer
 
 
 Used DCodes :
-    D11
-    D14
-    D16
-    D17
-    D18
-    D19
-    D38
-    D39
-    D40
-    D41
-    D42
-    D43
-    D44
-    D45
-    D46
-    D47
-    D48
-    D49
-    D50
-    D51
-    D52
-    D53
-    D54
-*************************************************************
-
-*************************************************************
-Generating : L3 - PWR
-      File : etf_blink.GP2
-
-    Adding Layer      : L3 - PWR
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D39
-    D55
-    D56
-    D57
     D58
-    D59
-    D60
 *************************************************************
 
 *************************************************************
@@ -67,8 +24,10 @@ Generating : Bottom Paste
 
 
 Used DCodes :
-    D16
-    D22
+    D17
+    D21
+    D59
+    D60
     D61
     D62
     D63
@@ -76,50 +35,6 @@ Used DCodes :
     D65
     D66
     D67
-    D68
-    D69
-*************************************************************
-
-*************************************************************
-Generating : L4 - SIG/GND
-      File : etf_blink.GBL
-
-    Adding Layer      : L4 - SIG/GND
-
-    Adding Layer      : Multi-Layer
-
-
-Used DCodes :
-    D11
-    D14
-    D15
-    D16
-    D22
-    D38
-    D41
-    D42
-    D43
-    D44
-    D45
-    D46
-    D47
-    D48
-    D49
-    D50
-    D51
-    D52
-    D53
-    D54
-    D61
-    D62
-    D63
-    D64
-    D65
-    D66
-    D67
-    D68
-    D69
-    D70
 *************************************************************
 
 *************************************************************
@@ -134,68 +49,51 @@ Generating : Top Paste
 
 
 Used DCodes :
-    D16
     D17
     D18
     D19
 *************************************************************
 
 *************************************************************
-Generating : L2 - GND
-      File : etf_blink.GP1
+Generating : Bottom Solder
+      File : etf_blink.GBS
 
-    Adding Layer      : L2 - GND
+    Adding Layer      : Bottom Solder
+
+    Adding Layer      : L4 - SIG/GND
 
     Adding Layer      : Multi-Layer
 
 
 Used DCodes :
-    D55
-    D56
-    D57
-    D58
-    D59
-*************************************************************
-
-*************************************************************
-Generating : Keep-Out Layer
-      File : etf_blink.GKO
-
-    Adding Layer      : Keep-Out Layer
-
-
-Used DCodes :
-    D39
-*************************************************************
-
-*************************************************************
-Generating : Top Overlay
-      File : etf_blink.GTO
-
-    Adding Layer      : Top Overlay
-
-
-Used DCodes :
-    D10
-    D11
-    D12
-    D13
-    D14
-    D15
-*************************************************************
-
-*************************************************************
-Generating : Bottom Overlay
-      File : etf_blink.GBO
-
-    Adding Layer      : Bottom Overlay
-
-
-Used DCodes :
-    D10
-    D13
-    D15
-    D83
+    D20
+    D23
+    D24
+    D25
+    D26
+    D27
+    D28
+    D29
+    D30
+    D31
+    D32
+    D33
+    D34
+    D35
+    D36
+    D37
+    D69
+    D70
+    D71
+    D72
+    D73
+    D74
+    D75
+    D76
+    D77
+    D78
+    D79
+    D80
 *************************************************************
 
 *************************************************************
@@ -231,10 +129,40 @@ Used DCodes :
 *************************************************************
 
 *************************************************************
-Generating : Bottom Solder
-      File : etf_blink.GBS
+Generating : Bottom Overlay
+      File : etf_blink.GBO
 
-    Adding Layer      : Bottom Solder
+    Adding Layer      : Bottom Overlay
+
+
+Used DCodes :
+    D11
+    D14
+    D15
+    D16
+    D81
+*************************************************************
+
+*************************************************************
+Generating : Top Overlay
+      File : etf_blink.GTO
+
+    Adding Layer      : Top Overlay
+
+
+Used DCodes :
+    D10
+    D11
+    D12
+    D13
+    D14
+    D15
+    D16
+*************************************************************
+
+*************************************************************
+Generating : L4 - SIG/GND
+      File : etf_blink.GBL
 
     Adding Layer      : L4 - SIG/GND
 
@@ -242,32 +170,103 @@ Generating : Bottom Solder
 
 
 Used DCodes :
-    D20
-    D24
-    D25
-    D26
-    D27
-    D28
-    D29
-    D30
-    D31
-    D32
-    D33
-    D34
-    D35
-    D36
-    D37
-    D71
-    D72
-    D73
-    D74
-    D75
-    D76
-    D77
-    D78
-    D79
-    D80
-    D81
-    D82
+    D12
+    D15
+    D16
+    D17
+    D21
+    D38
+    D39
+    D40
+    D41
+    D42
+    D43
+    D44
+    D45
+    D46
+    D47
+    D48
+    D49
+    D50
+    D51
+    D52
+    D59
+    D60
+    D61
+    D62
+    D63
+    D64
+    D65
+    D66
+    D67
+    D68
+*************************************************************
+
+*************************************************************
+Generating : L3 - PWR
+      File : etf_blink.GP2
+
+    Adding Layer      : L3 - PWR
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D10
+    D53
+    D54
+    D55
+    D56
+    D57
+    D58
+*************************************************************
+
+*************************************************************
+Generating : L2 - GND
+      File : etf_blink.GP1
+
+    Adding Layer      : L2 - GND
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D53
+    D54
+    D55
+    D56
+    D57
+*************************************************************
+
+*************************************************************
+Generating : L1 - SIG/PWR
+      File : etf_blink.GTL
+
+    Adding Layer      : L1 - SIG/PWR
+
+    Adding Layer      : Multi-Layer
+
+
+Used DCodes :
+    D12
+    D15
+    D17
+    D18
+    D19
+    D38
+    D39
+    D40
+    D41
+    D42
+    D43
+    D44
+    D45
+    D46
+    D47
+    D48
+    D49
+    D50
+    D51
+    D52
 *************************************************************
 

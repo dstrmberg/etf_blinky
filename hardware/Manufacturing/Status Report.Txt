@@ -1,12 +1,11 @@
-Output: NC Drill Files
-Type  : NC Drill
-From  : PCB Document [etf_blink.PcbDoc]
-   Generated File[etf_blink.TXT]
-   Generated File[etf_blink.LDP]
-   Generated File[etf_blink.DRR]
+Output: Generates pick and place files
+Type  : Pick Place
+From  : Variant [[No Variations]] of PCB Document [etf_blink.PcbDoc]
+   Generated File[Pick Place for etf_blink.txt]
+   Generated File[Pick Place for etf_blink.csv]
 
 
-Files Generated   : 3
+Files Generated   : 2
 Documents Printed : 0
 
-Finished Output Generation At 22:48:13 On 2023-09-26
+Finished Output Generation At 8:56:04 PM On 3/19/2024
