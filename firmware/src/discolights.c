@@ -1,4 +1,5 @@
 
+#include "pattern.h"
 #include "scheduler.h"
 #include "sys.h"
 #include "bb_spi.h"
@@ -15,58 +16,39 @@ volatile int8_t k;
 
 void led_send();
 
+
 int main(void)
 {
-    //_delay_ms(1000);
     
     sys_init();
 
-  //  _delay_ms(2000);
-
-//    sys_powerOff();
-	
     //dl_schedulerInit();
     //button_init();
     bb_spi_init();
+
+    patternInit();
+
+    patternFunc currentPat = patternNext();
 
     while(1)
     {
         //dl_run();
         if (PINA & (1 << PA7))
         {
-            sys_powerOff();
+            //sys_powerOff();
+            currentPat = patternNext();
+            _delay_ms(300);
+        }
+        else if (PINB & (1 << PB2))
+        {
+            currentPat = patternPrevious();
+            _delay_ms(300);
         }
 
-        led_send();
+        //led_send();
+
+        currentPat();
     }
-
-
-    /*
-    while (1)
-    {
-        // Check events
-        bb_spi_byte(0x00);
-        bb_spi_byte(0x00);
-        bb_spi_byte(0x00);
-        bb_spi_byte(0x00);
-        
-        bb_spi_byte(0xE0);
-        bb_spi_byte(0xFF);
-        bb_spi_byte(0x00);
-        bb_spi_byte(0xFF);
-        
-        bb_spi_byte(0xE0);
-        bb_spi_byte(0x00);
-        bb_spi_byte(0xFF);
-        bb_spi_byte(0xFF);
-        
-        bb_spi_byte(0xFF);
-        bb_spi_byte(0xFF);
-        bb_spi_byte(0xFF);
-        bb_spi_byte(0xFF);
-	}
-    */
-
 }
 
 
