@@ -25,8 +25,9 @@ int main(void)
 
 //    sys_powerOff();
 	
-    dl_schedulerInit();
+    //dl_schedulerInit();
     //button_init();
+    bb_spi_init();
 
     while(1)
     {
@@ -35,6 +36,8 @@ int main(void)
         {
             sys_powerOff();
         }
+
+        led_send();
     }
 
 
@@ -66,7 +69,6 @@ int main(void)
 
 }
 
-/*
 
 void led_send()
 {
@@ -98,8 +100,7 @@ void led_send()
 	if (led_pos == 9) k = -1;
 	if (led_pos == 0)  k =  1;
 	
-	u8 delay_count = adc_get_val();
-	for (int j = 0; j < delay_count; j++) _delay_ms(.1);
+	for (int j = 0; j < 128; j++) _delay_ms(.1);
 	
 	bb_spi_byte(0xFF);
 	bb_spi_byte(0xFF);
@@ -108,4 +109,3 @@ void led_send()
 	
 }
 
-*/
