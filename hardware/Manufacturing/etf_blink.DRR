@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------------------------------------------------------
-NCDrill File Report For: etf_blink.PcbDoc   2023-09-26  22:48:12
+NCDrill File Report For: etf_blink.PcbDoc   3/19/2024  8:56:02 PM
 ----------------------------------------------------------------------------------------------------------------------------------
 
 Layer Pair : L1 - SIG/PWR to L4 - SIG/GND
@@ -7,11 +7,11 @@ ASCII RoundHoles File : etf_blink.TXT
 
 Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
 ----------------------------------------------------------------------------------------------------------------------------------
-T1      8mil (0.201mm)                                            Round             102       PTH        13.12inch (333.17mm)
+T1      8mil (0.201mm)                                            Round             90        PTH        12.19inch (309.53mm)
 T2      32mil (0.8mm)                                             Round             10        PTH        2.38inch (60.54mm)
 T3      39mil (1.001mm)                                           Round             46        PTH        7.60inch (192.95mm)
 T4      87mil (2.2mm)                                             Round             4         PTH        7.05inch (179.00mm)
 ----------------------------------------------------------------------------------------------------------------------------------
-Totals                                                                              162
+Totals                                                                              150
 
 Total Processing Time (hh:mm:ss) : 00:00:00
