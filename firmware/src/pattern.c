@@ -9,9 +9,10 @@ static patternFunc patterns[MAX_PATTERNS];
 
 static uint8_t currPattern;
 
-static void staticColorRed(void);
-static void staticColorGreen(void);
-static void staticColorBlue(void);
+// TODO(noxet): make static again
+void staticColorRed(void);
+void staticColorGreen(void);
+void staticColorBlue(void);
 
 
 void patternInit(void)
@@ -37,7 +38,7 @@ patternFunc patternPrevious(void)
 }
 
 
-static void staticColorRed(void)
+void staticColorRed(void)
 {
     
 	bb_spi_byte(0);
@@ -47,7 +48,7 @@ static void staticColorRed(void)
 	
 
 	for (int i = 0; i < 10; i++) {
-        bb_spi_byte(0xFF);
+        bb_spi_byte(0xE1);
         bb_spi_byte(0);
         bb_spi_byte(0);
         bb_spi_byte(255);
@@ -69,7 +70,7 @@ void staticColorBlue(void)
 	
 
 	for (int i = 0; i < 10; i++) {
-        bb_spi_byte(0xFF);
+        bb_spi_byte(0xE1);
         bb_spi_byte(255);
         bb_spi_byte(0);
         bb_spi_byte(0);
@@ -92,7 +93,7 @@ void staticColorGreen(void)
 	
 
 	for (int i = 0; i < 10; i++) {
-        bb_spi_byte(0xFF);
+        bb_spi_byte(0xE1);
         bb_spi_byte(0);
         bb_spi_byte(255);
         bb_spi_byte(0);

@@ -4,7 +4,7 @@
 #include <avr/io.h>
 
 #define PORT_MOSI	(PORTA)
-#define PIN_MOSI	(5)
+#define PIN_MOSI	(6)
 #define DDR_MOSI 	(DDRA)
 #define DDR_SCK		(DDRA)
 #define PORT_SCK	(PORTA)
