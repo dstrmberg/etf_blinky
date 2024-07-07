@@ -9,6 +9,7 @@
 
 
 static volatile u8 adcVal8bit = 0;
+static volatile bool adcFlag = false;
 static volatile bool adcSempahore = false;
 
 
@@ -27,6 +28,17 @@ void adc_init()
 void adc_start()
 {
 	ADCSRA |= (1 << ADSC);
+}
+
+bool adc_isDone(void)
+{
+    if (adcFlag)
+    {
+        adcFlag  = false;
+        return true;
+    }
+
+    return false;
 }
 
 u16 adc_get_val()
@@ -67,7 +79,7 @@ void adc_channel_audio()
 	ADMUX |= (1 << MUX0);
 }
 
-void adc_channel_vbat_level()
+void adc_setVbatChannel(void)
 {
 	ADMUX &= ~(1 << MUX1);
 	ADMUX |= (1 << MUX1);
@@ -76,8 +88,13 @@ void adc_channel_vbat_level()
 ISR(ADC_vect)
 {
     if (!adcSempahore) {
+        // Throw away the least 2 bits
 	    adcVal8bit = (u8) (ADC >> 2);
+        adcFlag = true;
     }
+	    
+    adcVal8bit = (u8) (ADC >> 2);
+    adcFlag = true;
     /*
     red_led = adc_val_8bit;
 	green_led = 0.5 * adc_val_8bit;

@@ -28,9 +28,10 @@ int main(void)
     DDRB |= (1 << PB1);
     PORTB |= (1 << PB1);
 
+    adc_start();
+
     //dl_schedulerInit();
     //button_init();
-    bb_spi_init();
     staticColorGreen();
 
     //patternInit();
