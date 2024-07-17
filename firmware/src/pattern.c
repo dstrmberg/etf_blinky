@@ -83,6 +83,7 @@ bool patternBootSequence2(void)
     return true;
 }
 
+
 void patternBatteryLevel(u8 level)
 {
     if (level > 250) ledState[9].r = 42;
@@ -94,9 +95,10 @@ void patternBatteryLevel(u8 level)
     if (level > 100) ledState[3].r = 42;
     if (level > 75) ledState[2].r = 42;
     if (level > 50) ledState[1].r = 42;
-    if (level <= 50) ledState[0].r = 42;
+    if (level > 0) ledState[0].r = 42;
     setLeds();
 }
+
 
 void patternInit(void)
 {
@@ -166,6 +168,7 @@ void staticColorBlue(void)
 
 
 }
+
 
 void staticColorGreen(void)
 {    

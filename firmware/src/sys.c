@@ -15,15 +15,15 @@ void sys_init(void)
 {
     /*
 	adc_init();
-	adc_interrupt_enable();
     */
     sys_powerOn();
 	bb_spi_init();
 	button_init();
     patternBootSequence2();
     adc_init();
-    while (1) sys_batteryCheck();
+    adc_interrupt_enable();
     sei();
+    //while (1) sys_batteryCheck();
 }
 
 u8 sys_enterCritical(void)
@@ -55,7 +55,7 @@ void sys_batteryCheck(void)
     clearLeds();
     adc_setVbatChannel();
     adc_start();
-    //while (!adc_isDone());
+    while (!adc_isDone());
     u8 level = adc_get_val();
     patternBatteryLevel(level);
 }

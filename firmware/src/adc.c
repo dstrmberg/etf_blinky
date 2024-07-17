@@ -81,7 +81,7 @@ void adc_channel_audio()
 
 void adc_setVbatChannel(void)
 {
-	ADMUX &= ~(1 << MUX1);
+	ADMUX &= ~(1 << MUX0);
 	ADMUX |= (1 << MUX1);
 }
 
@@ -104,5 +104,5 @@ ISR(ADC_vect)
 	*/
 	
 	
-	adc_start();
+	//adc_start();
 }
