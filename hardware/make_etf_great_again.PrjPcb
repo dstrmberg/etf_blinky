@@ -190,151 +190,83 @@ DocumentPath=Project Outputs for make_etf_great_again\Design Rule Check - etf_bl
 DItemRevisionGUID=
 
 [GeneratedDocument2]
-DocumentPath=.\Manufacturing\etf_blink.DRR
-DItemRevisionGUID=
-
-[GeneratedDocument3]
 DocumentPath=Manufacturing\etf_blink.DRR
 DItemRevisionGUID=
 
-[GeneratedDocument4]
-DocumentPath=.\Manufacturing\etf_blink.EXTREP
-DItemRevisionGUID=
-
-[GeneratedDocument5]
+[GeneratedDocument3]
 DocumentPath=Manufacturing\etf_blink.EXTREP
 DItemRevisionGUID=
 
-[GeneratedDocument6]
-DocumentPath=.\Manufacturing\etf_blink.GBL
-DItemRevisionGUID=
-
-[GeneratedDocument7]
+[GeneratedDocument4]
 DocumentPath=Manufacturing\etf_blink.GBL
 DItemRevisionGUID=
 
-[GeneratedDocument8]
-DocumentPath=.\Manufacturing\etf_blink.GBO
-DItemRevisionGUID=
-
-[GeneratedDocument9]
+[GeneratedDocument5]
 DocumentPath=Manufacturing\etf_blink.GBO
 DItemRevisionGUID=
 
-[GeneratedDocument10]
-DocumentPath=.\Manufacturing\etf_blink.GBP
-DItemRevisionGUID=
-
-[GeneratedDocument11]
+[GeneratedDocument6]
 DocumentPath=Manufacturing\etf_blink.GBP
 DItemRevisionGUID=
 
-[GeneratedDocument12]
-DocumentPath=.\Manufacturing\etf_blink.GBS
-DItemRevisionGUID=
-
-[GeneratedDocument13]
+[GeneratedDocument7]
 DocumentPath=Manufacturing\etf_blink.GBS
 DItemRevisionGUID=
 
-[GeneratedDocument14]
-DocumentPath=.\Manufacturing\etf_blink.GKO
-DItemRevisionGUID=
-
-[GeneratedDocument15]
+[GeneratedDocument8]
 DocumentPath=Manufacturing\etf_blink.GKO
 DItemRevisionGUID=
 
-[GeneratedDocument16]
+[GeneratedDocument9]
 DocumentPath=Manufacturing\etf_blink.GM
 DItemRevisionGUID=
 
-[GeneratedDocument17]
-DocumentPath=.\Manufacturing\etf_blink.GP1
-DItemRevisionGUID=
-
-[GeneratedDocument18]
+[GeneratedDocument10]
 DocumentPath=Manufacturing\etf_blink.GP1
 DItemRevisionGUID=
 
-[GeneratedDocument19]
-DocumentPath=.\Manufacturing\etf_blink.GP2
-DItemRevisionGUID=
-
-[GeneratedDocument20]
+[GeneratedDocument11]
 DocumentPath=Manufacturing\etf_blink.GP2
 DItemRevisionGUID=
 
-[GeneratedDocument21]
-DocumentPath=.\Manufacturing\etf_blink.GTL
-DItemRevisionGUID=
-
-[GeneratedDocument22]
+[GeneratedDocument12]
 DocumentPath=Manufacturing\etf_blink.GTL
 DItemRevisionGUID=
 
-[GeneratedDocument23]
-DocumentPath=.\Manufacturing\etf_blink.GTO
-DItemRevisionGUID=
-
-[GeneratedDocument24]
+[GeneratedDocument13]
 DocumentPath=Manufacturing\etf_blink.GTO
 DItemRevisionGUID=
 
-[GeneratedDocument25]
-DocumentPath=.\Manufacturing\etf_blink.GTP
-DItemRevisionGUID=
-
-[GeneratedDocument26]
+[GeneratedDocument14]
 DocumentPath=Manufacturing\etf_blink.GTP
 DItemRevisionGUID=
 
-[GeneratedDocument27]
-DocumentPath=.\Manufacturing\etf_blink.GTS
-DItemRevisionGUID=
-
-[GeneratedDocument28]
+[GeneratedDocument15]
 DocumentPath=Manufacturing\etf_blink.GTS
 DItemRevisionGUID=
 
-[GeneratedDocument29]
-DocumentPath=.\Manufacturing\etf_blink.LDP
-DItemRevisionGUID=
-
-[GeneratedDocument30]
+[GeneratedDocument16]
 DocumentPath=Manufacturing\etf_blink.LDP
 DItemRevisionGUID=
 
-[GeneratedDocument31]
-DocumentPath=.\Manufacturing\etf_blink.REP
-DItemRevisionGUID=
-
-[GeneratedDocument32]
+[GeneratedDocument17]
 DocumentPath=Manufacturing\etf_blink.REP
 DItemRevisionGUID=
 
-[GeneratedDocument33]
-DocumentPath=.\Manufacturing\etf_blink.RUL
-DItemRevisionGUID=
-
-[GeneratedDocument34]
+[GeneratedDocument18]
 DocumentPath=Manufacturing\etf_blink.RUL
 DItemRevisionGUID=
 
-[GeneratedDocument35]
-DocumentPath=.\Manufacturing\etf_blink.TXT
-DItemRevisionGUID=
-
-[GeneratedDocument36]
+[GeneratedDocument19]
 DocumentPath=Manufacturing\etf_blink.TXT
 DItemRevisionGUID=
 
-[GeneratedDocument37]
-DocumentPath=.\Manufacturing\Pick Place for etf_blink.csv
+[GeneratedDocument20]
+DocumentPath=Manufacturing\Pick Place for etf_blink.csv
 DItemRevisionGUID=
 
-[GeneratedDocument38]
-DocumentPath=.\Manufacturing\Pick Place for etf_blink.txt
+[GeneratedDocument21]
+DocumentPath=Manufacturing\Pick Place for etf_blink.txt
 DItemRevisionGUID=
 
 [Parameter1]
