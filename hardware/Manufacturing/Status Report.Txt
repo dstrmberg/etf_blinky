@@ -1,11 +1,10 @@
-Output: Generates pick and place files
+Output: Copy of Generates pick and place files
 Type  : Pick Place
 From  : Variant [[No Variations]] of PCB Document [etf_blink.PcbDoc]
    Generated File[Pick Place for etf_blink.txt]
-   Generated File[Pick Place for etf_blink.csv]
 
 
-Files Generated   : 2
+Files Generated   : 1
 Documents Printed : 0
 
-Finished Output Generation At 23:52:23 On 2024-05-05
+Finished Output Generation At 11:05:37 PM On 9/9/2024

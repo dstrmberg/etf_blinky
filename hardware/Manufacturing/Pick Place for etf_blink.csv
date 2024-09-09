@@ -1,12 +1,12 @@
 Altium Designer Pick and Place Locations
-E:\dev\ETF Kurser\etf_blinky\hardware\.\Manufacturing\Pick Place for etf_blink.csv
+C:\git_projects\etf_blink\hardware\.\Manufacturing\Pick Place for etf_blink.csv
 
 ========================================================================================================================
 File Design Information:
 
-Date:       05-05-24
-Time:       23:52
-Revision:   a2bbef175878e3d49f03a762885e9df9f31507f3
+Date:       09/09/24
+Time:       23:05
+Revision:   1b1819c123e4c742b64385bda8c7805539aefa28
 Variant:    No variations
 Units used: mm
 
@@ -18,7 +18,7 @@ Units used: mm
 "LED3","0805, LED","TopLayer","0805_led","11.0388","22.9289","0",""
 "C26","0603, capacitor","TopLayer","0603_cap","63.5905","20.3720","90",""
 "R15","0603, resistor","BottomLayer","0603","65.5100","13.1900","180",""
-"D12","Diode, SMD","BottomLayer","SOD323","12.1060","15.1063","0",""
+"D12","Diode, SMD","BottomLayer","SOD323","8.0000","17.0513","0",""
 "L1","Inductor, 1616","BottomLayer","XEL4030-102MEC","-0.3230","20.1600","180","Shielded Power Inductor with Ferrite Core"
 "U2","TPS61023","BottomLayer","SOT50P160X60-6N","1.0100","16.3651","0","TPS61023 3.7-A Boost Converter with 0.5-V Ultra-low Input Voltage"
 "MK1","Electret","TopLayer","ElectretMic_9.7mm_6.7mm","71.5300","26.0100","90","D9.7mm H6.7mm, Electrokit art nr: 40290007"
@@ -79,7 +79,7 @@ architecture."
 "C18","0603, capacitor","BottomLayer","0603_cap","60.9480","14.1925","180",""
 "C17","0603, capacitor","BottomLayer","0603_cap","59.7350","18.8610","0",""
 "C15","CAP, 1206","BottomLayer","1206_180","-2.4300","14.8700","270",""
-"C14","0603, capacitor","BottomLayer","0603_cap","21.6230","19.0600","180",""
+"C14","0603, capacitor","BottomLayer","0603_cap","20.9975","16.8200","270",""
 "C13","0603, capacitor","BottomLayer","0603_cap","26.5330","16.2200","90",""
 "C12","1206, capacitor","TopLayer","1206,_capasitor","60.9672","33.7705","0",""
 "C11","1206, capacitor","TopLayer","1206,_capasitor","54.9982","33.7705","0",""

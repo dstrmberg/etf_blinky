@@ -59,9 +59,9 @@ Configuration1_Item3=JLCPCB Part #=True
 Configuration1_Name4=SortOrder
 Configuration1_Item4=Designator=Up
 Configuration1_Name5=VisibleOrder
-Configuration1_Item5=Designator=120|Quantity=120|Value=100|JLCPCB Part #=100
+Configuration1_Item5=Designator=120|Quantity=120|Value=100|JLCPCB Part #=100|Mount=100
 Configuration1_Name6=VisibleOrder_Flat
-Configuration1_Item6=Designator=120|Quantity=120|Value=100|JLCPCB Part #=100
+Configuration1_Item6=Designator=120|Quantity=120|Value=100|JLCPCB Part #=100|Mount=100
 OutputType2=Gerber
 OutputName2=Gerber Files
 OutputCategory2=Fabrication
@@ -104,6 +104,20 @@ OutputEnabled4_OutputMedium5=0
 OutputDefault4=0
 Configuration4_Name1=OutputConfigurationParameter1
 Configuration4_Item1=Record=PickPlaceView|Units=Metric|GenerateCSVFormat=True|GenerateTextFormat=True|ShowUnits=False|Separator=.|ExcludeFilterParam=False|IncludeVariations=False|IncludeStandardNoBOM=True|Filter= |FilterActive=False|YFlip=False|DifferentFootprints=False|Column#1=Name:Designator,Fixed:True,Metric:False,Visible:True,Sort:None,Position:0|Column#2=Name:Comment,Fixed:True,Metric:False,Visible:True,Sort:None,Position:1|Column#3=Name:Layer,Fixed:True,Metric:False,Visible:True,Sort:None,Position:2|Column#4=Name:Footprint,Fixed:True,Metric:False,Visible:True,Sort:None,Position:3|Column#5=Name:Footprint Description,Fixed:True,Metric:False,Visible:False,Sort:None,Position:4|Column#6=Name:Center-X,Fixed:True,Metric:True,Visible:True,Sort:None,Position:5|Column#7=Name:Center-Y,Fixed:True,Metric:True,Visible:True,Sort:None,Position:6|Column#8=Name:Rotation,Fixed:True,Metric:False,Visible:True,Sort:None,Position:7|Column#9=Name:Description,Fixed:True,Metric:False,Visible:True,Sort:None,Position:8|Column#10=Name:ComponentKind,Fixed:True,Metric:False,Visible:False,Sort:None,Position:9|Column#11=Name:Height,Fixed:True,Metric:True,Visible:False,Sort:None,Position:10|Column#12=Name:Ref-X,Fixed:True,Metric:True,Visible:False,Sort:None,Position:11|Column#13=Name:Ref-Y,Fixed:True,Metric:True,Visible:False,Sort:None,Position:12|Column#14=Name:Pad-X,Fixed:True,Metric:True,Visible:False,Sort:None,Position:13|Column#15=Name:Pad-Y,Fixed:True,Metric:True,Visible:False,Sort:None,Position:14|Column#16=Name:Variation,Fixed:True,Metric:False,Visible:False,Sort:None,Position:15|Column#17=Name:SRF,Fixed:False,Metric:False,Visible:False,Sort:None,Position:22,Type:0|Column#18=Name:AC Current,Fixed:False,Metric:False,Visible:False,Sort:None,Position:16,Type:0|Column#19=Name:Supplier,Fixed:False,Metric:False,Visible:False,Sort:None,Position:23,Type:0|Column#20=Name:JLCPCB Part #,Fixed:False,Metric:False,Visible:False,Sort:None,Position:18,Type:0|Column#21=Name:Order code,Fixed:False,Metric:False,Visible:False,Sort:None,Position:20,Type:0|Column#22=Name:DC Resistance,Fixed:False,Metric:False,Visible:False,Sort:None,Position:17,Type:0|Column#23=Name:Manufacturer Part Number,Fixed:False,Metric:False,Visible:False,Sort:None,Position:19,Type:0|Column#24=Name:PartNumber,Fixed:False,Metric:False,Visible:False,Sort:None,Position:21,Type:0|Column#25=Name:Value,Fixed:False,Metric:False,Visible:False,Sort:None,Position:24,Type:0|DocumentPath=C:\git_projects\etf_blink\hardware\etf_blink.PcbDoc
+OutputType5=Pick Place
+OutputName5=Copy of Generates pick and place files
+OutputCategory5=Assembly
+OutputDocumentPath5=etf_blink.PcbDoc
+OutputVariantName5=
+OutputEnabled5=1
+OutputEnabled5_OutputMedium1=0
+OutputEnabled5_OutputMedium2=0
+OutputEnabled5_OutputMedium3=4
+OutputEnabled5_OutputMedium4=0
+OutputEnabled5_OutputMedium5=0
+OutputDefault5=0
+Configuration5_Name1=OutputConfigurationParameter1
+Configuration5_Item1=Record=PickPlaceView|Units=Imperial|GenerateCSVFormat=False|GenerateTextFormat=True|ShowUnits=False|Separator= |ExcludeFilterParam=False|IncludeVariations=False|IncludeStandardNoBOM=True|Filter= |FilterActive=False|YFlip=False|DifferentFootprints=False|Column#1=Name:Designator,Fixed:True,Metric:False,Visible:True,Sort:None,Position:0|Column#2=Name:Comment,Fixed:True,Metric:False,Visible:True,Sort:None,Position:1|Column#3=Name:Layer,Fixed:True,Metric:False,Visible:True,Sort:None,Position:2|Column#4=Name:Footprint,Fixed:True,Metric:False,Visible:True,Sort:None,Position:3|Column#5=Name:Footprint Description,Fixed:True,Metric:False,Visible:False,Sort:None,Position:4|Column#6=Name:Center-X,Fixed:True,Metric:True,Visible:True,Sort:None,Position:5|Column#7=Name:Center-Y,Fixed:True,Metric:True,Visible:True,Sort:None,Position:6|Column#8=Name:Rotation,Fixed:True,Metric:False,Visible:True,Sort:None,Position:7|Column#9=Name:Description,Fixed:True,Metric:False,Visible:True,Sort:None,Position:8|Column#10=Name:ComponentKind,Fixed:True,Metric:False,Visible:False,Sort:None,Position:9|Column#11=Name:Height,Fixed:True,Metric:True,Visible:False,Sort:None,Position:10|Column#12=Name:Ref-X,Fixed:True,Metric:True,Visible:False,Sort:None,Position:11|Column#13=Name:Ref-Y,Fixed:True,Metric:True,Visible:False,Sort:None,Position:12|Column#14=Name:Pad-X,Fixed:True,Metric:True,Visible:False,Sort:None,Position:13|Column#15=Name:Pad-Y,Fixed:True,Metric:True,Visible:False,Sort:None,Position:14|Column#16=Name:Variation,Fixed:True,Metric:False,Visible:False,Sort:None,Position:15|DocumentPath=C:\git_projects\etf_blink\hardware\etf_blink.PcbDoc
 
 [PublishSettings]
 OutputFilePath2=
