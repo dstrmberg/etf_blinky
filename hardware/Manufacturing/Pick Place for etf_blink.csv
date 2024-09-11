@@ -1,11 +1,11 @@
 Altium Designer Pick and Place Locations
-C:\git_projects\etf_blink\hardware\.\Manufacturing\Pick Place for etf_blink.csv
+E:\dev\ETF Kurser\etf_blinky\hardware\.\Manufacturing\Pick Place for etf_blink.csv
 
 ========================================================================================================================
 File Design Information:
 
-Date:       09/09/24
-Time:       23:05
+Date:       11-09-24
+Time:       22:23
 Revision:   1b1819c123e4c742b64385bda8c7805539aefa28
 Variant:    No variations
 Units used: mm
@@ -32,7 +32,7 @@ Units used: mm
 "LED1","0805, LED","BottomLayer","0805_led","28.1630","19.1700","0",""
 "R24","0603, resistor","BottomLayer","0603","71.7450","7.7510","0",""
 "R23","0603, resistor","BottomLayer","0603","68.6850","15.3010","0",""
-"R22","0603, resistor","BottomLayer","0603","69.2350","7.0410","90",""
+"R22","0603, resistor","BottomLayer","0603","69.2350","7.0410","270",""
 "D14","Diode, SMD","BottomLayer","SOD323","63.3907","14.3400","90",""
 "C16","CAP, 1206","BottomLayer","1206_180","3.3500","17.1651","90",""
 "C25","CAP, TH","TopLayer","MMK7.5104K100K00L4BULK","17.1010","10.3790","180",""
