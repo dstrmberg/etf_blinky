@@ -5,6 +5,7 @@
 #include "bb_spi.h"
 #include "adc.h"
 #include "button.h"
+#include "timer.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -32,7 +33,7 @@ int main(void)
 
     //dl_schedulerInit();
     //button_init();
-    staticColorGreen();
+    //staticColorGreen();
 
     //patternInit();
 
@@ -40,12 +41,14 @@ int main(void)
 
     while(1)
     {
+        
         //dl_run();
         if (PINA & (1 << PA7))
         {
             //currentPat = patternNext();
             //_delay_ms(300);
-            PORTB |= MINILED;
+            sys_debugLedOn(true);
+            timer_start();
         }
         else if (PINB & (1 << PB2))
         {
