@@ -7,15 +7,54 @@ project(
     HOMEPAGE_URL http://add.me
 )
 
-# Not the best practice to use this, but this is just a small project (tm)
-aux_source_directory(src SRC)
-
-add_executable(${PROJECT_NAME} ${SRC})
-
 # create compile commands database and make a symbolic link in top dir
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 file(CREATE_LINK
     "${CMAKE_BINARY_DIR}/compile_commands.json"
     "${CMAKE_SOURCE_DIR}/compile_commands.json"
     SYMBOLIC
+)
+
+# Not the best practice to use this, but this is just a small project (tm)
+aux_source_directory(src SRC)
+
+add_executable(${PROJECT_NAME} ${SRC})
+
+
+### Extras ###
+
+if (NOT WIN32)
+    string(ASCII 27 Esc)
+    set(ColourReset "${Esc}[m")
+    set(Green       "${Esc}[32m")
+endif()
+
+message(STATUS "${Green}MCU:        ${MCU}${ColourReset}")
+message(STATUS "${Green}F_CPU:      ${F_CPU}${ColourReset}")
+
+# show utilized space
+add_custom_command(TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ${CMAKE_C_OBJDUMP}
+    ARGS -Pmem-usage ${PROJECT_NAME}
+)
+
+# generate ihex
+add_custom_command(OUTPUT hexfile
+    COMMAND ${CMAKE_C_OBJCOPY}
+    ARGS -O ihex ${PROJECT_NAME} ${PROJECT_NAME}.hex
+    DEPENDS ${PROJECT_NAME}
+)
+add_custom_target(hex ALL DEPENDS hexfile)
+
+# generate bin
+add_custom_command(OUTPUT binfile
+    COMMAND ${CMAKE_C_OBJCOPY}
+    ARGS -O binary ${PROJECT_NAME} ${PROJECT_NAME}.bin
+    DEPENDS ${PROJECT_NAME}
+)
+add_custom_target(bin ALL DEPENDS binfile)
+
+add_custom_target(flash
+    COMMAND ${AVRDUDE} -c ${AVRDUDE_PRG} -p ${AVRDUDE_TRG} -U flash:w:${PROJECT_NAME}.hex
 )
