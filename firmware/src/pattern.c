@@ -104,14 +104,14 @@ void patternBatteryLevel(u8 level)
 }
 
 
-void patternAudioLevel(u8 level)
+void patternAudioLevel(u16 level)
 {
     //clearLeds();
-    if (level > 250) { ledState[9].r = 127; ledState[9].b = 20; }
-    if (level > 225) { ledState[8].r = 127; ledState[8].b = 15; }
-    if (level > 200) { ledState[7].r = 127; ledState[7].b = 10; }
-    if (level > 175) { ledState[6].r = 127; ledState[6].b = 5; }
-    if (level > 150) { ledState[5].r = 127; ledState[5].b = 1; }
+    if (level > 250) { ledState[9].r = 127; ledState[9].g = 20; }
+    if (level > 225) { ledState[8].r = 127; ledState[8].g = 15; }
+    if (level > 200) { ledState[7].r = 127; ledState[7].g = 10; }
+    if (level > 175) { ledState[6].r = 127; ledState[6].g = 5; }
+    if (level > 150) { ledState[5].r = 127; ledState[5].g = 1; }
     if (level > 125) ledState[4].r = 127;
     if (level > 100) ledState[3].r = 127;
     if (level > 75) ledState[2].r = 127;

@@ -90,7 +90,17 @@ void sys_audioCheck(void)
     //clearLeds();
     adc_start();
     while (!adc_isDone());
-    u8 level = adc_get_val();
+    u16 level = adc_get_val();
+    if (400 > level)
+    {
+        level = 0;
+    }
+    else
+    {
+        level -= 400;
+    }
+    patternAudioLevel(level >> 1);
+    /*
     xn = level;
     y_n = xn - xn1 + 0.99f * yn1;
     if (y_n < 0) y_n = 0;
@@ -99,11 +109,12 @@ void sys_audioCheck(void)
     if (y_n > max)
     {
         max = y_n;
-        patternAudioLevel((uint8_t) max*4);
+        patternAudioLevel(max);
         // restart timer to keep the retention of the latest larger value
         timer_stop();
         timer_start();
     }
+    */
 
     if (timer_done()) max = 0;
 }
