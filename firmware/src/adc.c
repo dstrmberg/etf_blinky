@@ -8,7 +8,7 @@
 #define VBAT_LEVEL		(2)
 
 
-static volatile u8 adcVal8bit = 0;
+static volatile u16 adcVal = 0;
 static volatile bool adcFlag = false;
 static volatile bool adcSempahore = false;
 
@@ -43,13 +43,13 @@ bool adc_isDone(void)
 
 u16 adc_get_val()
 {
-    u16 adcVal;
+    u16 adc;
 
     adcSempahore = true;
-        adcVal = adcVal8bit;
+        adc = adcVal;
     adcSempahore = false;
-    
-    return adcVal;
+
+    return adc;
 }
 
 void adc_interrupt_enable()
@@ -89,12 +89,9 @@ ISR(ADC_vect)
 {
     if (!adcSempahore) {
         // Throw away the least 2 bits
-	    adcVal8bit = (u8) (ADC >> 2);
+        adcVal = ADC;
         adcFlag = true;
     }
-	    
-    adcVal8bit = (u8) (ADC >> 2);
-    adcFlag = true;
     /*
     red_led = adc_val_8bit;
 	green_led = 0.5 * adc_val_8bit;

@@ -24,18 +24,13 @@ void sys_init(void)
     */
     DDRB |= SYS_DBG_LED;
     sys_powerOn();
-	bb_spi_init();
-	//button_init();
+    bb_spi_init();
+    button_init();
     patternBootSequence2();
-    //adc_init();
-    //adc_channel_audio();
-    //adc_interrupt_enable();
-    //timer_init();
-    while (1)
-    {
-        PORTB ^= SYS_DBG_LED;
-        _delay_ms(250);
-    }
+    adc_init();
+    adc_channel_audio();
+    adc_interrupt_enable();
+    timer_init();
     sei();
     while (1) sys_audioCheck();
 }
