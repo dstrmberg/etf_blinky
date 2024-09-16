@@ -29,9 +29,9 @@ int main(void)
     //button_init();
     //staticColorGreen();
 
-    //patternInit();
+    patternInit();
 
-    //patternFunc currentPat = patternNext();
+    patternFunc currentPat = patternNext();
 
     while(1)
     {
@@ -39,29 +39,26 @@ int main(void)
         //dl_run();
         if (PINA & (1 << PA7))
         {
-            //currentPat = patternNext();
-            //_delay_ms(300);
-            sys_debugLedOn(true);
-            timer_start();
+            currentPat = patternNext();
+            _delay_ms(300);
+            //sys_debugLedOn(true);
+            //timer_start();
         }
         else if (PINB & (1 << PB2))
         {
-            //currentPat = patternPrevious();
-            //_delay_ms(300);
-            PORTB &= ~MINILED;
+            currentPat = patternPrevious();
+            _delay_ms(300);
+            //PORTB &= ~MINILED;
         }
-        else if (PINB & (1 << PB0))
-        {
-            while(PINB & (1 << PB0));
-            _delay_ms(1000);
-            PORTB &= ~(1 << PB1);
-            sys_powerOff();
 
+        if (btnPwrPressed())
+        {
+            if (patternShutdownSequence()) sys_powerOff();
         }
 
         //led_send();
 
-        //currentPat();
+        currentPat();
     }
 }
 

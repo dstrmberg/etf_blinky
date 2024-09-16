@@ -56,7 +56,7 @@ ISR(BTN1_INTERRUPT)
 	
 	btn1_prev = btn1_crnt;
 
-    sys_powerOff();
+    //sys_powerOff();
 
     event_s ev = {
         .eventFunc = btnPressed,

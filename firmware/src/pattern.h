@@ -9,7 +9,7 @@ typedef void(*patternFunc)(void);
 
 void patternInit(void);
 bool patternBootSequence(void);
-bool patternBootSequence2(void);
+bool patternShutdownSequence(void);
 void patternBatteryLevel(u8 level);
 void patternAudioLevel(u16 level);
 void clearLeds(void);

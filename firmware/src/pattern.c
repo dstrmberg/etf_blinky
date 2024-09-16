@@ -60,22 +60,6 @@ void clearLeds(void)
 
 bool patternBootSequence(void)
 {
-    for (int i = 0; i < 5; i++)
-    {
-        // TODO(noxet): check pwr button
-        ledState[i].g = 255;
-        ledState[9 - i].g = 255;
-        setLeds();
-        _delay_ms(100);
-
-    }
-
-    return true;
-}
-
-
-bool patternBootSequence2(void)
-{
     clearLeds();
     for (int i = 0; i < 10; i++)
     {
@@ -83,6 +67,33 @@ bool patternBootSequence2(void)
         setLeds();
         if (!btnPwrPressed()) return false;
         _delay_ms(50);
+    }
+
+    return true;
+}
+
+
+bool patternShutdownSequence(void)
+{
+    clearLeds();
+    for (int i = 0; i < 10; i++)
+    {
+        ledState[i].r = 127;
+    }
+
+    setLeds();
+
+    for (int i = 9; i >= 0; i--)
+    {
+        ledState[i].r = 0;
+        if (!btnPwrPressed())
+        {
+            clearLeds();
+            setLeds();
+            return false;
+        }
+        _delay_ms(75);
+        setLeds();
     }
 
     return true;

@@ -21,7 +21,7 @@ void sys_init(void)
     button_init();
     sys_powerOn();
     bb_spi_init();
-    if (!patternBootSequence2()) sys_powerOff();
+    if (!patternBootSequence()) sys_powerOff();
     
     // don't fully start the system until user releases the pwr button
     while (btnPwrPressed());
@@ -31,7 +31,7 @@ void sys_init(void)
     adc_interrupt_enable();
     timer_init();
     sei();
-    while (1) sys_audioCheck();
+    //while (1) sys_audioCheck();
 }
 
 u8 sys_enterCritical(void)
@@ -54,6 +54,8 @@ void sys_powerOn(void)
 
 void sys_powerOff(void)
 {
+    // wait until the pwr button is released, otherwise we can not turn the device off
+    while (btnPwrPressed());
     SYS_PWR_EN_PORT &= ~(1 << SYS_PWR_EN_PIN);
 }
 
