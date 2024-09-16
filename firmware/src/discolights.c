@@ -22,14 +22,8 @@ void led_send();
 
 int main(void)
 {
-    
     sys_init();
 
-    while (PINB & (1 << PB0));
-    DDRB |= (1 << PB1);
-    PORTB |= (1 << PB1);
-
-    adc_start();
 
     //dl_schedulerInit();
     //button_init();

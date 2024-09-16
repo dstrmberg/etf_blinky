@@ -44,7 +44,7 @@ bool timer_done(void)
 ISR(TIM0_OVF_vect)
 {
     cnt++;
-    if (cnt >= TIME_50_MS)
+    if (cnt >= TIME_100_MS)
     {
         done = true;
         clearLeds();

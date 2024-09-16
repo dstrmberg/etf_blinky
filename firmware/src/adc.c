@@ -88,7 +88,6 @@ void adc_setVbatChannel(void)
 ISR(ADC_vect)
 {
     if (!adcSempahore) {
-        // Throw away the least 2 bits
         adcVal = ADC;
         adcFlag = true;
     }

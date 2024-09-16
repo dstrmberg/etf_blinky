@@ -1,15 +1,13 @@
 #include "sys.h"
 
-#include <avr/io.h>
-
 #include "dl_utils.h"
 #include "bb_spi.h"
 #include "adc.h"
 #include "button.h"
 #include "pattern.h"
-
 #include "timer.h"
-#include "util/delay.h"
+
+#include <avr/io.h>
 
 #define SYS_PWR_EN_PORT (PORTA)
 #define SYS_PWR_EN_PIN  (3)
@@ -19,14 +17,15 @@ void sys_audioCheck(void);
 
 void sys_init(void)
 {
-    /*
-	adc_init();
-    */
     DDRB |= SYS_DBG_LED;
+    button_init();
     sys_powerOn();
     bb_spi_init();
-    button_init();
-    patternBootSequence2();
+    if (!patternBootSequence2()) sys_powerOff();
+    
+    // don't fully start the system until user releases the pwr button
+    while (btnPwrPressed());
+    
     adc_init();
     adc_channel_audio();
     adc_interrupt_enable();
@@ -51,7 +50,6 @@ void sys_powerOn(void)
 {
     DDRA |= (1 << SYS_PWR_EN_PIN);
     SYS_PWR_EN_PORT |= (1 << SYS_PWR_EN_PIN);
-
 }
 
 void sys_powerOff(void)
@@ -88,18 +86,25 @@ int max = 0;
 void sys_audioCheck(void)
 {
     //clearLeds();
+	u16 dcoff = 350;
     adc_start();
     while (!adc_isDone());
     u16 level = adc_get_val();
-    if (400 > level)
+    if (dcoff > level)
     {
         level = 0;
     }
     else
     {
-        level -= 400;
+        level -= dcoff;
     }
-    patternAudioLevel(level >> 1);
+	if (level > max)
+	{
+		max = level;
+		patternAudioLevel(max);
+		timer_stop();
+		timer_start();
+	}
     /*
     xn = level;
     y_n = xn - xn1 + 0.99f * yn1;

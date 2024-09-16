@@ -4,11 +4,13 @@
 
 #include <avr/interrupt.h>
 #include <avr/io.h>
+#include <stdbool.h>
 
 // PCINT7 and PCINT10
 #define BTN2_PCINT	7
 #define BTN1_PCINT	2
 
+#define BTN_PWR (1 << 0)
 #define BTN1	2
 #define BTN2	7
 
@@ -26,7 +28,7 @@ void button_init()
 	
 	DDRB &= ~(1<<BTN1);
 	DDRA &= ~(1<<BTN2);
-	
+	DDRB &= ~BTN_PWR;
 }
 
 void btnPressed(u16 data)
@@ -35,6 +37,12 @@ void btnPressed(u16 data)
     {
         sys_powerOff();
     }
+}
+
+
+bool btnPwrPressed(void)
+{
+    return (PINB & BTN_PWR) ? true : false;
 }
 
 

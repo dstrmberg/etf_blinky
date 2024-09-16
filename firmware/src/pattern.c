@@ -1,10 +1,11 @@
 
 #include "pattern.h"
 #include "bb_spi.h"
-#include "util/delay.h"
+#include "button.h"
 
 #include <stdint.h>
 #include <string.h>
+#include <util/delay.h>
 
 #define MAX_PATTERNS 3
 static patternFunc patterns[MAX_PATTERNS];
@@ -51,7 +52,7 @@ void setLeds(void)
 void clearLeds(void)
 {
     memset(ledState, 0, 10 * sizeof(struct LED_s));
-    
+
     // TODO(noxet): fix this, should probably not be done here
     //setLeds();
 }
@@ -80,6 +81,7 @@ bool patternBootSequence2(void)
     {
         ledState[i].g = 1 + (i + 1) * 5;
         setLeds();
+        if (!btnPwrPressed()) return false;
         _delay_ms(50);
     }
 
@@ -107,16 +109,16 @@ void patternBatteryLevel(u8 level)
 void patternAudioLevel(u16 level)
 {
     //clearLeds();
-    if (level > 250) { ledState[9].r = 127; ledState[9].g = 20; }
-    if (level > 225) { ledState[8].r = 127; ledState[8].g = 15; }
-    if (level > 200) { ledState[7].r = 127; ledState[7].g = 10; }
-    if (level > 175) { ledState[6].r = 127; ledState[6].g = 5; }
-    if (level > 150) { ledState[5].r = 127; ledState[5].g = 1; }
-    if (level > 125) ledState[4].r = 127;
-    if (level > 100) ledState[3].r = 127;
-    if (level > 75) ledState[2].r = 127;
-    if (level > 50) ledState[1].r = 127;
-    if (level > 0) ledState[0].r = 127;
+    if (level > 250)	{ ledState[9].r = 127; }
+    if (level > 225)	{ ledState[8].r = 127; }
+    if (level > 200)	{ ledState[7].r = 127; }
+    if (level > 175)	{ ledState[6].r = 127; }
+    if (level > 150)	{ ledState[5].r = 127; }
+    if (level > 125)	{ ledState[4].r = 127; ledState[4].g = 1; }
+    if (level > 100)	{ ledState[3].r = 127; ledState[3].g = 5; }
+    if (level > 75)		{ ledState[2].r = 127; ledState[2].g = 10; }
+    if (level > 50)		{ ledState[1].r = 127; ledState[1].g = 15; }
+    if (level > 0)		{ ledState[0].r = 127; ledState[0].g = 20; }
     setLeds();
 }
 
