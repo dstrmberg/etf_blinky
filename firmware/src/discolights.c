@@ -12,14 +12,6 @@
 #include <util/delay.h>
 
 
-volatile uint8_t red_led, green_led, blue_led, led_pos;
-volatile int8_t k;
-
-#define MINILED (1 << PB1)
-
-void led_send();
-
-
 int main(void)
 {
     sys_debugLedOn(true);
@@ -35,7 +27,20 @@ int main(void)
     while(1)
     {
         
-        dl_run();
+        event_s ev = dl_run();
+        switch (ev.code)
+        {
+            case EV_NOP:
+                break;
+            case EV_BUTTON_PRESSED:
+                if (ev.eventData == 1) currentPat = patternNext();
+                else if (ev.eventData == 2) currentPat = patternPrevious();
+                _delay_ms(300);
+                break;
+            case EV_BUTTON_RELEASED:
+                break;
+        }
+        /*
         if (PINA & (1 << PA7))
         {
             currentPat = patternNext();
@@ -54,6 +59,7 @@ int main(void)
         {
             if (patternShutdownSequence()) sys_powerOff();
         }
+        */
 
         //led_send();
 
@@ -61,43 +67,4 @@ int main(void)
     }
 }
 
-
-void led_send()
-{
-	
-	bb_spi_byte(0);
-	bb_spi_byte(0);
-	bb_spi_byte(0);
-	bb_spi_byte(0);
-	
-
-	for (int i = 0; i < 10; i++) {
-		
-		if (led_pos == i) {
-			bb_spi_byte(0xFF);
-			bb_spi_byte(255);
-			bb_spi_byte(0);
-			bb_spi_byte(0);
-		} else {
-			bb_spi_byte(0xFF);
-			bb_spi_byte(0);
-			bb_spi_byte(10);
-			bb_spi_byte(0);
-		}
-				
-	}
-	
-	led_pos = led_pos + k;
-	
-	if (led_pos == 9) k = -1;
-	if (led_pos == 0)  k =  1;
-	
-	for (int j = 0; j < 128; j++) _delay_ms(.1);
-	
-	bb_spi_byte(0xFF);
-	bb_spi_byte(0xFF);
-	bb_spi_byte(0xFF);
-	bb_spi_byte(0xFF);
-	
-}
 

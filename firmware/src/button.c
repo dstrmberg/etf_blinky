@@ -59,7 +59,7 @@ ISR(BTN1_INTERRUPT)
     {
 		btn1_pressed = 1;
         event_s ev = {
-            .eventFunc = btnPressed,
+            .code = EV_BUTTON_PRESSED,
             .eventData = 1,
         };
 
@@ -83,7 +83,7 @@ ISR(BTN2_INTERRUPT)
     {
 	    btn2_pressed = 1;
         event_s ev = {
-            .eventFunc = btnPressed,
+            .code = EV_BUTTON_PRESSED,
             .eventData = 2,
         };
 

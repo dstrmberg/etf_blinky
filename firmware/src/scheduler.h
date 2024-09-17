@@ -2,15 +2,25 @@
 
 #include "sys.h"
 
-typedef void (*funcPtr)(u16);
+#include <stdbool.h>
+
+
+enum eventCode
+{
+    EV_NOP,
+    EV_BUTTON_PRESSED,
+    EV_BUTTON_RELEASED,
+    
+};
 
 typedef struct
 {
-    funcPtr eventFunc;
+    enum eventCode code;
     u16 eventData;
 } event_s;
 
-void dl_schedulerInit();
+
+void dl_schedulerInit(void);
 bool dl_addEvent(event_s ev);
-void dl_run();
+event_s dl_run(void);
 
