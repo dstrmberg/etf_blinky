@@ -22,6 +22,8 @@ void dl_schedulerInit(void)
 
 bool dl_addEvent(event_s ev)
 {
+    if (g_eventQueue[g_nextFreeEvent].code != EV_NOP) return false;
+
     u8 status = sys_enterCritical();
     if (g_eventQueue[g_nextFreeEvent].code != EV_NOP)
     {
