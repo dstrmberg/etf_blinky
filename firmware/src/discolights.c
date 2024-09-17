@@ -22,12 +22,11 @@ void led_send();
 
 int main(void)
 {
+    sys_debugLedOn(true);
     sys_init();
 
 
-    //dl_schedulerInit();
-    //button_init();
-    //staticColorGreen();
+    dl_schedulerInit();
 
     patternInit();
 
@@ -36,7 +35,7 @@ int main(void)
     while(1)
     {
         
-        //dl_run();
+        dl_run();
         if (PINA & (1 << PA7))
         {
             currentPat = patternNext();

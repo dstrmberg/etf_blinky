@@ -66,7 +66,7 @@ bool patternBootSequence(void)
         ledState[i].g = 1 + (i + 1) * 5;
         setLeds();
         if (!btnPwrPressed()) return false;
-        _delay_ms(50);
+        _delay_ms(100);
     }
 
     return true;
@@ -145,14 +145,18 @@ void patternInit(void)
 
 patternFunc patternNext(void)
 {
-    currPattern = (currPattern + 1) % MAX_PATTERNS;
+    currPattern++;
+    if (currPattern == MAX_PATTERNS) currPattern = 0;
+
     return patterns[currPattern];
 }
 
 
 patternFunc patternPrevious(void)
 {
-    currPattern = (currPattern - 1) % MAX_PATTERNS;
+    if (currPattern == 0) currPattern = MAX_PATTERNS - 1;
+    else currPattern--;
+
     return patterns[currPattern];
 }
 
