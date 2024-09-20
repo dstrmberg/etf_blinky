@@ -18,7 +18,7 @@ void sys_audioCheck(void);
 void sys_init(void)
 {
     DDRB |= SYS_DBG_LED;
-    button_init();
+    btnInit();
     sys_powerOn();
     bb_spi_init();
     if (!patternBootSequence()) sys_powerOff();
@@ -88,7 +88,7 @@ int max = 0;
 void sys_audioCheck(void)
 {
     //clearLeds();
-	u16 dcoff = 350;
+	u16 dcoff = 400;//350;
     adc_start();
     while (!adc_isDone());
     u16 level = adc_get_val();
@@ -100,7 +100,7 @@ void sys_audioCheck(void)
     {
         level -= dcoff;
     }
-	if (level > max)
+	if (level >= max)
 	{
 		max = level;
 		patternAudioLevel(max);

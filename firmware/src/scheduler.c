@@ -10,9 +10,9 @@
 
 static event_s g_eventQueue[DL_MAX_EVENTS];
 static u8 g_eventToRun = 0;
-static u8 g_nextFreeEvent = 1;
+static u8 g_nextFreeEvent = 0;
 
-void dl_schedulerInit(void)
+void evInit(void)
 {
     for (int i = 0; i < DL_MAX_EVENTS; i++)
     {
@@ -20,7 +20,7 @@ void dl_schedulerInit(void)
     }
 }
 
-bool dl_addEvent(event_s ev)
+bool evAdd(event_s ev)
 {
     if (g_eventQueue[g_nextFreeEvent].code != EV_NOP) return false;
 
@@ -39,7 +39,7 @@ bool dl_addEvent(event_s ev)
     return true;
 }
 
-event_s dl_run(void)
+event_s evRun(void)
 {
     if (g_eventQueue[g_eventToRun].code == EV_NOP) return (event_s) { EV_NOP, 0 };
 

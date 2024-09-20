@@ -2,5 +2,11 @@
 
 #include <stdbool.h>
 
-void button_init();
+enum button
+{
+    BUTTON1 = 1,
+    BUTTON2,
+};
+
+void btnInit();
 bool btnPwrPressed(void);

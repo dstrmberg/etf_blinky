@@ -19,9 +19,11 @@
 #define BTN2_INTERRUPT	PCINT0_vect
 
 
-static volatile uint8_t btn1_pressed, btn1_prev, btn1_crnt, btn2_pressed, btn2_prev, btn2_crnt;
+static volatile uint8_t btn1Prev = 0;
+static volatile uint8_t btn2Prev = 0;
 
-void button_init()
+
+void btnInit()
 {		
 	GIMSK |= (1 << PCIE1) | (1 << PCIE0);
 	PCMSK0 |= (1 << BTN2_PCINT); // PCINT7
@@ -31,6 +33,7 @@ void button_init()
 	DDRA &= ~(1 << BTN2);
 	DDRB &= ~(1 << BTN_PWR);
 }
+
 
 void btnPressed(u16 data)
 {
@@ -53,47 +56,44 @@ bool btnPwrPressed(void)
 
 ISR(BTN1_INTERRUPT)
 {
-    btn1_crnt = (PINB & (1 << BTN1)) >> BTN1;
-	
-	if (btn1_crnt > btn1_prev)
-    {
-		btn1_pressed = 1;
-        event_s ev = {
-            .code = EV_BUTTON_PRESSED,
-            .eventData = 1,
-        };
+    uint8_t btn1Curr = (PINB & (1 << BTN1)) >> BTN1;
 
-        dl_addEvent(ev);
+    event_s ev = NEW_EVENT();
+	if (btn1Curr > btn1Prev)
+    {
+        ev.code = EV_BUTTON_PRESSED;
+        ev.eventData = BUTTON1;
+        evAdd(ev);
 	}
-    else
+    else if (btn1Curr < btn1Prev)
     {
-        btn1_pressed = 0;
+        ev.code = EV_BUTTON_RELEASED;
+        ev.eventData = BUTTON1;
+        evAdd(ev);
     }
-	
-	btn1_prev = btn1_crnt;
 
-    //sys_powerOff
+	btn1Prev = btn1Curr;
 }
+
 
 ISR(BTN2_INTERRUPT)
 {
-    btn2_crnt = (PINA & (1 << BTN2)) >> BTN2;
-    
-    if (btn2_crnt > btn2_prev)
-    {
-	    btn2_pressed = 1;
-        event_s ev = {
-            .code = EV_BUTTON_PRESSED,
-            .eventData = 2,
-        };
+    uint8_t btn2Curr = (PINA & (1 << BTN2)) >> BTN2;
 
-        dl_addEvent(ev);
-    }
-    else
+    event_s ev = NEW_EVENT();
+    if (btn2Curr > btn2Prev)
     {
-        btn2_pressed = 0;
+        ev.code = EV_BUTTON_PRESSED;
+        ev.eventData = BUTTON2;
+        evAdd(ev);
+    }
+    else if (btn2Curr < btn2Prev)
+    {
+        ev.code = EV_BUTTON_RELEASED;
+        ev.eventData = BUTTON2;
+        evAdd(ev);
     }
 
-    btn2_prev = btn2_crnt;
+    btn2Prev = btn2Curr;
 }
 

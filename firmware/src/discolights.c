@@ -18,7 +18,7 @@ int main(void)
     sys_init();
 
 
-    dl_schedulerInit();
+    evInit();
 
     patternInit();
 
@@ -26,20 +26,23 @@ int main(void)
 
     while(1)
     {
-        
-        event_s ev = dl_run();
+
+        event_s ev = evRun();
         switch (ev.code)
         {
             case EV_NOP:
                 break;
             case EV_BUTTON_PRESSED:
-                if (ev.eventData == 1) currentPat = patternNext();
-                else if (ev.eventData == 2) currentPat = patternPrevious();
-                _delay_ms(300);
+                if (ev.eventData == BUTTON1) currentPat = patternNext();
+                else if (ev.eventData == BUTTON2) currentPat = patternPrevious();
+                //_delay_ms(300);
                 break;
             case EV_BUTTON_RELEASED:
+                if (ev.eventData == BUTTON1) sys_debugLedOn(true);
+                else if (ev.eventData == BUTTON2) sys_debugLedOn(false);
                 break;
         }
+
         /*
         if (PINA & (1 << PA7))
         {

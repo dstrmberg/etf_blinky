@@ -10,8 +10,10 @@ enum eventCode
     EV_NOP,
     EV_BUTTON_PRESSED,
     EV_BUTTON_RELEASED,
-    
 };
+
+#define NEW_EVENT() { EV_NOP, 0 }
+
 
 typedef struct
 {
@@ -20,7 +22,7 @@ typedef struct
 } event_s;
 
 
-void dl_schedulerInit(void);
-bool dl_addEvent(event_s ev);
-event_s dl_run(void);
+void evInit(void);
+bool evAdd(event_s ev);
+event_s evRun(void);
 
