@@ -1,8 +1,7 @@
 #pragma once
 
-#include "sys.h"
-
 #include <stdbool.h>
+#include <stdint.h>
 
 
 enum eventCode
@@ -18,7 +17,7 @@ enum eventCode
 typedef struct
 {
     enum eventCode code;
-    u16 eventData;
+    uint16_t eventData;
 } event_s;
 
 
