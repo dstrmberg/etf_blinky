@@ -28,57 +28,69 @@ void sys_exitCritical(void)
 
 void* mainThread(void *arg)
 {
-    for (int i = 0; i < 20; i++)
+    (void) arg;
+
+    int processedEvents = 0;
+    while (processedEvents < 20)
     {
         event_s ev = evRun();
         switch (ev.code)
         {
-            case 1:
-                printf(MAINTAG "Event 1: %d\n", ev.eventData);
+            case EV_NOP:
+                printf(MAINTAG "EV_NOP: %d\n", ev.eventData);
             break;
-            case 2:
-                printf(MAINTAG "Event 2: %d\n", ev.eventData);
+            case EV_BUTTON_PRESSED:
+                printf(MAINTAG "EV_PRESSED: %d\n", ev.eventData);
+                processedEvents++;
             break;
-            case 3:
-                printf(MAINTAG "Event 3: %d\n", ev.eventData);
+            case EV_BUTTON_RELEASED:
+                printf(MAINTAG "EV_RELEASED: %d\n", ev.eventData);
+                processedEvents++;
             break;
         }
 
-        sleep(1);
+        //sleep(1);
     }
 
     run = 0;
+    return NULL;
 }
 
 
 void* isrThread(void *arg)
 {
+    (void) arg;
+
     static int nice = 69;
     static int chill = 420;
     while (run)
     {
         event_s ev = NEW_EVENT();
-        ev.code = 1;
+        ev.code = EV_BUTTON_PRESSED;
         ev.eventData = nice++;
         printf(ISRTAG "Add event %d: %d\n", ev.code, ev.eventData);
         bool ret = evAdd(ev);
         if (!ret) printf(ISRTAG "Event handler full!\n");
 
-        usleep(600000);
+        //usleep(600000);
 
-        ev.code = 2;
+        ev.code = EV_BUTTON_RELEASED;
         ev.eventData = chill++;
         printf(ISRTAG "Add event %d: %d\n", ev.code, ev.eventData);
         ret = evAdd(ev);
         if (!ret) printf(ISRTAG "Event handler full!\n");
 
-        usleep(600000);
+        //usleep(600000);
     }
+
+    return NULL;
 }
 
 
 int main(void)
 {
+    printf("Running scheduler test\n");
+
     pthread_mutex_init(&g_mut, NULL);
 
     pthread_t tMain;
@@ -86,11 +98,9 @@ int main(void)
 
     evInit();
 
-    printf("Creating threads...\n");
     pthread_create(&tMain, NULL, mainThread, NULL);
     pthread_create(&tISR, NULL, isrThread, NULL);
 
-    printf("Waiting for threads to finish...\n");
     pthread_join(tMain, NULL);
     pthread_join(tISR, NULL);
 }
