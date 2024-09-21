@@ -19,6 +19,7 @@ option(BUILD_TESTS "Build test suite for host target" OFF)
 
 if (BUILD_TESTS)
     ### Build tests for host ###
+    set(CMAKE_C_FLAGS_DEBUG "-Wall -Wextra -pedantic -fdiagnostics-color=always -Og -std=gnu99 -fsanitize=thread")
     add_executable(test tests/test_scheduler.c src/scheduler.c)
     target_include_directories(test PUBLIC src/)
 
