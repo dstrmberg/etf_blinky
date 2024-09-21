@@ -15,46 +15,59 @@ file(CREATE_LINK
     SYMBOLIC
 )
 
-# Not the best practice to use this, but this is just a small project (tm)
-aux_source_directory(src SRC)
+option(BUILD_TESTS "Build test suite for host target" OFF)
 
-add_executable(${PROJECT_NAME} ${SRC})
+if (BUILD_TESTS)
+    ### Build tests for host ###
+    add_executable(test tests/test_scheduler.c src/scheduler.c)
+    target_include_directories(test PUBLIC src/)
+
+else()
+
+    ### Build firmware for target ###
+
+    # Not the best practice to use this, but this is just a small project (tm)
+    aux_source_directory(src SRC)
+
+    add_executable(${PROJECT_NAME} ${SRC})
 
 
-### Extras ###
+    ### Extras ###
 
-if (NOT WIN32)
-    string(ASCII 27 Esc)
-    set(ColourReset "${Esc}[m")
-    set(Green       "${Esc}[32m")
+    if (NOT WIN32)
+        string(ASCII 27 Esc)
+        set(ColourReset "${Esc}[m")
+        set(Green       "${Esc}[32m")
+    endif()
+
+    message(STATUS "${Green}MCU:        ${MCU}${ColourReset}")
+    message(STATUS "${Green}F_CPU:      ${F_CPU}${ColourReset}")
+
+    # show utilized space
+    add_custom_command(TARGET ${PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_C_OBJDUMP}
+        ARGS -Pmem-usage ${PROJECT_NAME}
+    )
+
+    # generate ihex
+    add_custom_command(OUTPUT hexfile
+        COMMAND ${CMAKE_C_OBJCOPY}
+        ARGS -O ihex ${PROJECT_NAME} ${PROJECT_NAME}.hex
+        DEPENDS ${PROJECT_NAME}
+    )
+    add_custom_target(hex ALL DEPENDS hexfile)
+
+    # generate bin
+    add_custom_command(OUTPUT binfile
+        COMMAND ${CMAKE_C_OBJCOPY}
+        ARGS -O binary ${PROJECT_NAME} ${PROJECT_NAME}.bin
+        DEPENDS ${PROJECT_NAME}
+    )
+    add_custom_target(bin ALL DEPENDS binfile)
+
+    add_custom_target(flash
+        COMMAND ${AVRDUDE} -c ${AVRDUDE_PRG} -p ${AVRDUDE_TRG} -U flash:w:${PROJECT_NAME}.hex
+    )
+
 endif()
-
-message(STATUS "${Green}MCU:        ${MCU}${ColourReset}")
-message(STATUS "${Green}F_CPU:      ${F_CPU}${ColourReset}")
-
-# show utilized space
-add_custom_command(TARGET ${PROJECT_NAME}
-    POST_BUILD
-    COMMAND ${CMAKE_C_OBJDUMP}
-    ARGS -Pmem-usage ${PROJECT_NAME}
-)
-
-# generate ihex
-add_custom_command(OUTPUT hexfile
-    COMMAND ${CMAKE_C_OBJCOPY}
-    ARGS -O ihex ${PROJECT_NAME} ${PROJECT_NAME}.hex
-    DEPENDS ${PROJECT_NAME}
-)
-add_custom_target(hex ALL DEPENDS hexfile)
-
-# generate bin
-add_custom_command(OUTPUT binfile
-    COMMAND ${CMAKE_C_OBJCOPY}
-    ARGS -O binary ${PROJECT_NAME} ${PROJECT_NAME}.bin
-    DEPENDS ${PROJECT_NAME}
-)
-add_custom_target(bin ALL DEPENDS binfile)
-
-add_custom_target(flash
-    COMMAND ${AVRDUDE} -c ${AVRDUDE_PRG} -p ${AVRDUDE_TRG} -U flash:w:${PROJECT_NAME}.hex
-)
