@@ -2,18 +2,15 @@
 #include "timer.h"
 #include "pattern.h"
 #include "sys.h"
+#include "scheduler.h"
 
-#include "avr/io.h"
-#include "avr/interrupt.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/atomic.h>
 
-#define TIME_50_MS  (200)
-#define TIME_75_MS  (300)
-#define TIME_100_MS (400)
-#define TIME_150_MS (600)
-#define TIME_200_MS (800)
-
-static uint16_t cnt = 0;
-static bool done = false;
+static volatile uint16_t cnt = 0;
+static volatile bool done = false;
+static volatile uint32_t uptime = 0;
 
 void timer_init(void)
 {
@@ -22,7 +19,7 @@ void timer_init(void)
 
 void timer_start(void)
 {
-    TCCR0B |= (1 << CS01); // presc 8
+    TCCR0B |= (1 << CS02); // presc 256
 }
 
 void timer_stop(void)
@@ -41,14 +38,20 @@ bool timer_done(void)
     return false;
 }
 
+
+uint32_t timerGetUptime(void)
+{
+    uint32_t ut = 0;
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+    {
+        ut = uptime;
+    }
+
+    return ut;
+}
+
+
 ISR(TIM0_OVF_vect)
 {
-    cnt++;
-    if (cnt >= TIME_100_MS)
-    {
-        done = true;
-        clearLeds();
-        //sys_debugLedOn(false);
-        timer_stop();
-    }
+    uptime++;
 }
