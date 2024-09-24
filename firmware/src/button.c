@@ -22,6 +22,8 @@
 static volatile uint8_t btn1Prev = 0;
 static volatile uint8_t btn2Prev = 0;
 
+static volatile uint8_t btn1Pressed = 0, btn1Released = 0, btn2Pressed = 0, btn2Released = 0;
+
 
 void btnInit()
 {		
@@ -56,17 +58,20 @@ bool btnPwrPressed(void)
 
 ISR(BTN1_INTERRUPT)
 {
+    //if (!(PINB & (1 << PB2))) return;
     uint8_t btn1Curr = (PINB & (1 << BTN1)) >> BTN1;
 
     event_s ev = NEW_EVENT();
 	if (btn1Curr > btn1Prev)
     {
+        btn1Pressed++;
         ev.code = EV_BUTTON_PRESSED;
         ev.eventData = BUTTON1;
         evAdd(ev);
 	}
     else if (btn1Curr < btn1Prev)
     {
+        btn1Released++;
         ev.code = EV_BUTTON_RELEASED;
         ev.eventData = BUTTON1;
         evAdd(ev);
@@ -78,17 +83,20 @@ ISR(BTN1_INTERRUPT)
 
 ISR(BTN2_INTERRUPT)
 {
+    //if (!(PINA & (1 << PA7))) return;
     uint8_t btn2Curr = (PINA & (1 << BTN2)) >> BTN2;
 
     event_s ev = NEW_EVENT();
     if (btn2Curr > btn2Prev)
     {
+        btn2Pressed++;
         ev.code = EV_BUTTON_PRESSED;
         ev.eventData = BUTTON2;
         evAdd(ev);
     }
     else if (btn2Curr < btn2Prev)
     {
+        btn2Released++;
         ev.code = EV_BUTTON_RELEASED;
         ev.eventData = BUTTON2;
         evAdd(ev);

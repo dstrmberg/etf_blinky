@@ -17,9 +17,6 @@ int main(void)
     sys_debugLedOn(true);
     sys_init();
 
-
-    evInit();
-
     patternInit();
 
     patternFunc currentPat = patternNext();
@@ -33,9 +30,8 @@ int main(void)
             case EV_NOP:
                 break;
             case EV_BUTTON_PRESSED:
-                if (ev.eventData == BUTTON1) currentPat = patternNext();
-                else if (ev.eventData == BUTTON2) currentPat = patternPrevious();
-                //_delay_ms(300);
+                if (ev.eventData == BUTTON1) currentPat = patternPrevious();
+                else if (ev.eventData == BUTTON2) currentPat = patternNext();
                 break;
             case EV_BUTTON_RELEASED:
                 if (ev.eventData == BUTTON1) sys_debugLedOn(true);
@@ -43,28 +39,11 @@ int main(void)
                 break;
         }
 
-        /*
-        if (PINA & (1 << PA7))
-        {
-            currentPat = patternNext();
-            _delay_ms(300);
-            //sys_debugLedOn(true);
-            //timer_start();
-        }
-        else if (PINB & (1 << PB2))
-        {
-            currentPat = patternPrevious();
-            _delay_ms(300);
-            //PORTB &= ~MINILED;
-        }
 
         if (btnPwrPressed())
         {
             if (patternShutdownSequence()) sys_powerOff();
         }
-        */
-
-        //led_send();
 
         currentPat();
     }

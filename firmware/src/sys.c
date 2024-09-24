@@ -6,6 +6,7 @@
 #include "button.h"
 #include "pattern.h"
 #include "timer.h"
+#include "scheduler.h"
 
 #include <avr/io.h>
 
@@ -20,6 +21,7 @@ void sys_init(void)
     DDRB |= SYS_DBG_LED;
     btnInit();
     sys_powerOn();
+    evInit();
     bb_spi_init();
     if (!patternBootSequence()) sys_powerOff();
     
