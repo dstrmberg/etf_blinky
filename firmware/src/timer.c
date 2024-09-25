@@ -5,33 +5,25 @@
 #include <util/atomic.h>
 
 static volatile uint16_t cnt = 0;
-static volatile bool done = false;
 static volatile uint32_t uptime = 0;
 
-void timer_init(void)
+
+void timerInit(void)
 {
     TIMSK0 |= (1 << TOIE0);
 }
 
-void timer_start(void)
+
+void timerStart(void)
 {
     TCCR0B |= (1 << CS02); // presc 256
 }
 
-void timer_stop(void)
-{
-    TCCR0B &= ~(1 << CS01);
-    cnt = 0;
-}
 
-bool timer_done(void)
+void timerStop(void)
 {
-    if (done)
-    {
-        done = false;
-        return true;
-    }
-    return false;
+    TCCR0B &= ~(1 << CS00) & ~(1 << CS01) & (1 << CS02);
+    cnt = 0;
 }
 
 

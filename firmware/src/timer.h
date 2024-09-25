@@ -1,7 +1,6 @@
 #pragma once
 
-#include <stdbool.h>
-#include <stdint.h>
+#include "dl_utils.h"
 
 // X ms / 8.192
 #define TIME_50_MS  (6)
@@ -12,8 +11,7 @@
 #define TIME_1_s    (122)
 #define TIME_30_MIN (219726UL)
 
-void timer_init(void);
-void timer_start(void);
-void timer_stop(void);
-bool timer_done(void);
+void timerInit(void);
+void timerStart(void);
+void timerStop(void);
 uint32_t timerGetUptime(void);

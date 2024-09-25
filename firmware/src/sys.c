@@ -1,13 +1,13 @@
 #include "sys.h"
 
-#include "dl_utils.h"
-#include "bb_spi.h"
 #include "adc.h"
+#include "bb_spi.h"
 #include "button.h"
 #include "pattern.h"
-#include "timer.h"
 #include "scheduler.h"
+#include "timer.h"
 
+#include <avr/interrupt.h>
 #include <avr/io.h>
 
 #define SYS_PWR_EN_PORT (PORTA)
@@ -27,13 +27,14 @@ void sys_init(void)
 
     // don't fully start the system until user releases the pwr button
     while (btnPwrPressed())
-        ;
+    {
+    }
 
     adc_init();
     adc_channel_audio();
     adc_interrupt_enable();
-    timer_init();
-    timer_start();
+    timerInit();
+    timerStart();
     sei();
     // while (1) sys_audioCheck();
 }
@@ -60,7 +61,8 @@ void sys_powerOff(void)
 {
     // wait until the pwr button is released, otherwise we can not turn the device off
     while (btnPwrPressed())
-        ;
+    {
+    }
     SYS_PWR_EN_PORT &= ~(1 << SYS_PWR_EN_PIN);
 }
 
@@ -82,7 +84,8 @@ void sys_batteryCheck(void)
     adc_setVbatChannel();
     adc_start();
     while (!adc_isDone())
-        ;
+    {
+    }
     uint8_t level = adc_get_val();
     patternBatteryLevel(level);
 }
@@ -97,7 +100,8 @@ void sys_audioCheck(void)
     uint16_t dcoff = 400; // 350;
     adc_start();
     while (!adc_isDone())
-        ;
+    {
+    }
     uint16_t level = adc_get_val();
     if (dcoff > level)
     {
@@ -111,8 +115,8 @@ void sys_audioCheck(void)
     {
         max = level;
         patternAudioLevel(max);
-        timer_stop();
-        timer_start();
+        timerStop();
+        timerStart();
     }
     /*
     xn = level;
@@ -130,5 +134,5 @@ void sys_audioCheck(void)
     }
     */
 
-    if (timer_done()) max = 0;
+    // if (timer_done()) max = 0;
 }
