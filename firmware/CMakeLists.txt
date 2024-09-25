@@ -7,13 +7,6 @@ project(
     HOMEPAGE_URL http://add.me
 )
 
-# create compile commands database and make a symbolic link in top dir
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-file(CREATE_LINK
-    "${CMAKE_BINARY_DIR}/compile_commands.json"
-    "${CMAKE_SOURCE_DIR}/compile_commands.json"
-    SYMBOLIC
-)
 
 option(BUILD_TESTS "Build test suite for host target" OFF)
 
@@ -26,6 +19,14 @@ if (BUILD_TESTS)
 else()
 
     ### Build firmware for target ###
+
+    # create compile commands database and make a symbolic link in top dir
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+    file(CREATE_LINK
+        "${CMAKE_BINARY_DIR}/compile_commands.json"
+        "${CMAKE_SOURCE_DIR}/compile_commands.json"
+        SYMBOLIC
+    )
 
     # Not the best practice to use this, but this is just a small project (tm)
     aux_source_directory(src SRC)
