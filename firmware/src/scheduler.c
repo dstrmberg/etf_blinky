@@ -13,6 +13,14 @@ static volatile event_s g_eventQueue[DL_MAX_EVENTS];
 static volatile uint8_t g_eventToRun = 0;
 static volatile uint8_t g_nextFreeEvent = 0;
 
+enum scheduleMode
+{
+    SCHEDULE,
+    RESCHEDULE,
+};
+
+static bool evSchedule(event_s ev, uint32_t delay, enum scheduleMode mode);
+
 
 void evInit(void)
 {
@@ -25,36 +33,23 @@ void evInit(void)
 }
 
 
-bool evAdd(event_s ev)
+/**
+ * Add event to the queue, with a delay of "delay" time.
+ * The delay time shall be the ones defined in the timer.h file,
+ * such as TIMER_NOW, TIMER_100_MS etc.
+ */
+bool evAdd(event_s ev, uint32_t delay)
 {
-    return evSchedule(ev, 0, false);
+    return evSchedule(ev, delay, SCHEDULE);
 }
 
 
-bool evSchedule(event_s ev, uint32_t delay, bool reSchedule)
-{
-#ifndef TEST
-    // thread sanitizer complains about this, so remove during test (only affects performance)
-    if (g_eventQueue[g_nextFreeEvent].code != EV_NOP) return false;
-#endif
-
-    uint8_t status = sys_enterCritical();
-    if (g_eventQueue[g_nextFreeEvent].code != EV_NOP)
-    {
-        sys_exitCritical(status);
-        return false;
-    }
-
-    g_eventQueue[g_nextFreeEvent].code = ev.code;
-    g_eventQueue[g_nextFreeEvent].eventData = ev.eventData;
-    g_eventQueue[g_nextFreeEvent].timeToRun = reSchedule ? ev.timeToRun : timerGetUptime() + delay;
-    g_nextFreeEvent = (g_nextFreeEvent + 1) % DL_MAX_EVENTS;
-
-    sys_exitCritical(status);
-    return true;
-}
-
-
+/**
+ * The event handler.
+ * Polls an event from the queue and returns it.
+ * If the event is scheduled for a later time, it will be pop'd
+ * and re-pushed to the queue to avoid fragmentation.
+ */
 event_s evRun(void)
 {
 #ifndef TEST
@@ -76,7 +71,7 @@ event_s evRun(void)
     if (timerGetUptime() < ev.timeToRun)
     {
         // re-schedule this
-        evSchedule(ev, 0, true);
+        evSchedule(ev, 0, RESCHEDULE);
         sys_exitCritical(status);
         return (event_s) NEW_EVENT();
     }
@@ -84,4 +79,36 @@ event_s evRun(void)
     sys_exitCritical(status);
 
     return ev;
+}
+
+
+static bool evSchedule(event_s ev, uint32_t delay, enum scheduleMode mode)
+{
+#ifndef TEST
+    // thread sanitizer complains about this, so remove during test (only affects performance)
+    if (g_eventQueue[g_nextFreeEvent].code != EV_NOP) return false;
+#endif
+
+    uint8_t status = sys_enterCritical();
+    if (g_eventQueue[g_nextFreeEvent].code != EV_NOP)
+    {
+        sys_exitCritical(status);
+        return false;
+    }
+
+    g_eventQueue[g_nextFreeEvent].code = ev.code;
+    g_eventQueue[g_nextFreeEvent].eventData = ev.eventData;
+    switch (mode)
+    {
+        case SCHEDULE:
+            g_eventQueue[g_nextFreeEvent].timeToRun = timerGetUptime() + delay;
+            break;
+        case RESCHEDULE:
+            g_eventQueue[g_nextFreeEvent].timeToRun = ev.timeToRun;
+            break;
+    }
+    g_nextFreeEvent = (g_nextFreeEvent + 1) % DL_MAX_EVENTS;
+
+    sys_exitCritical(status);
+    return true;
 }

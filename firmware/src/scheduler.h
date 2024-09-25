@@ -27,6 +27,18 @@ typedef struct
 
 
 void evInit(void);
-bool evAdd(event_s ev);
-bool evSchedule(event_s ev, uint32_t delay, bool reSchedule);
+
+/**
+ * Add event to the queue, with a delay of "delay" time.
+ * The delay time shall be the ones defined in the timer.h file,
+ * such as TIMER_NOW, TIMER_100_MS etc.
+ */
+bool evAdd(event_s ev, uint32_t delay);
+
+/**
+ * The event handler.
+ * Polls an event from the queue and returns it.
+ * If the event is scheduled for a later time, it will be pop'd
+ * and re-pushed to the queue to avoid fragmentation.
+ */
 event_s evRun(void);

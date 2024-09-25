@@ -3,6 +3,7 @@
 #include "dl_utils.h"
 
 // X ms / 8.192
+#define TIME_NOW    (0)
 #define TIME_50_MS  (6)
 #define TIME_75_MS  (9)
 #define TIME_100_MS (12)

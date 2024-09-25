@@ -59,7 +59,6 @@ bool btnPwrPressed(void)
 
 ISR(BTN1_INTERRUPT)
 {
-    // if (!(PINB & (1 << PB2))) return;
     uint8_t btn1Curr = (PINB & (1 << BTN1)) >> BTN1;
 
     event_s ev = NEW_EVENT();
@@ -68,15 +67,14 @@ ISR(BTN1_INTERRUPT)
         btn1Pressed++;
         ev.code = EV_BUTTON_PRESSED;
         ev.eventData = BUTTON1;
-        evAdd(ev);
+        evAdd(ev, TIME_NOW);
     }
     else if (btn1Curr < btn1Prev)
     {
         btn1Released++;
         ev.code = EV_BUTTON_RELEASED;
         ev.eventData = BUTTON1;
-        evSchedule(ev, TIME_1_s, false);
-        // evAdd(ev);
+        evAdd(ev, TIME_1_s);
     }
 
     btn1Prev = btn1Curr;
@@ -85,7 +83,6 @@ ISR(BTN1_INTERRUPT)
 
 ISR(BTN2_INTERRUPT)
 {
-    // if (!(PINA & (1 << PA7))) return;
     uint8_t btn2Curr = (PINA & (1 << BTN2)) >> BTN2;
 
     event_s ev = NEW_EVENT();
@@ -94,21 +91,22 @@ ISR(BTN2_INTERRUPT)
         btn2Pressed++;
         ev.code = EV_BUTTON_PRESSED;
         ev.eventData = BUTTON2;
-        evAdd(ev);
+        evAdd(ev, TIME_NOW);
     }
     else if (btn2Curr < btn2Prev)
     {
         btn2Released++;
         ev.code = EV_BUTTON_RELEASED;
         ev.eventData = BUTTON2;
-        evAdd(ev);
+        evAdd(ev, TIME_NOW);
     }
 
     btn2Prev = btn2Curr;
 
+    // TODO(noxet): There is a possible HW bug where we get multiple interrupt on BTN2.
+    // possibly due to slow decay from debounce filter together with SPI being routed too close.
     PCMSK0 &= ~(1 << BTN2_PCINT);
     ev.code = EV_BUTTON_ISR_DISABLED;
     ev.eventData = BUTTON2;
-    // ev.timeToRun = TIME_100_MS;
-    evSchedule(ev, TIME_50_MS, false);
+    evAdd(ev, TIME_50_MS);
 }
