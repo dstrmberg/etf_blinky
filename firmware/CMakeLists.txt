@@ -69,7 +69,7 @@ else()
     add_custom_target(bin ALL DEPENDS binfile)
 
     add_custom_target(flash
-        COMMAND ${AVRDUDE} -c ${AVRDUDE_PRG} -p ${AVRDUDE_TRG} -U flash:w:${PROJECT_NAME}.hex
+        COMMAND ${AVRDUDE} -c ${AVRDUDE_PRG} -p ${AVRDUDE_TRG} -B 8 -U flash:w:${PROJECT_NAME}.hex
         USES_TERMINAL
     )
 
