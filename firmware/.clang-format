@@ -23,8 +23,9 @@ BraceWrapping:
 IndentPPDirectives: BeforeHash
 SeparateDefinitionBlocks: Leave
 MaxEmptyLinesToKeep: 2
-AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortIfStatementsOnASingleLine: WithoutElse
 SpaceAfterCStyleCast: true
 SortIncludes: Never
 IndentCaseLabels: true
-AllowShortBlocksOnASingleLine: Always
+AllowShortBlocksOnASingleLine: Empty
+ReflowComments: false
