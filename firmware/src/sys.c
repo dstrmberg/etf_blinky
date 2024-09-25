@@ -32,6 +32,7 @@ void sys_init(void)
     adc_channel_audio();
     adc_interrupt_enable();
     timer_init();
+    timer_start();
     sei();
     //while (1) sys_audioCheck();
 }

@@ -37,6 +37,9 @@ int main(void)
                 if (ev.eventData == BUTTON1) sys_debugLedOn(true);
                 else if (ev.eventData == BUTTON2) sys_debugLedOn(false);
                 break;
+            case EV_BUTTON_ISR_DISABLED:
+                PCMSK0 |= (1 << 7);
+                break;
         }
 
 

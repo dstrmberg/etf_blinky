@@ -1,6 +1,7 @@
 #include "button.h"
 #include "scheduler.h"
 #include "sys.h"
+#include "timer.h"
 
 #include <avr/interrupt.h>
 #include <avr/io.h>
@@ -74,7 +75,8 @@ ISR(BTN1_INTERRUPT)
         btn1Released++;
         ev.code = EV_BUTTON_RELEASED;
         ev.eventData = BUTTON1;
-        evAdd(ev);
+        evSchedule(ev, TIME_1_s, false);
+        //evAdd(ev);
     }
 
 	btn1Prev = btn1Curr;
@@ -103,5 +105,11 @@ ISR(BTN2_INTERRUPT)
     }
 
     btn2Prev = btn2Curr;
+
+    PCMSK0 &= ~(1 << BTN2_PCINT);
+    ev.code = EV_BUTTON_ISR_DISABLED;
+    ev.eventData = BUTTON2;
+    //ev.timeToRun = TIME_100_MS;
+    evSchedule(ev, TIME_50_MS, false);
 }
 
