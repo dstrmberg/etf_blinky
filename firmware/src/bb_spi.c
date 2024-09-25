@@ -54,7 +54,7 @@ static void bb_spi_bit(uint8_t bit)
 // It takes roughly 96 us to send one byte by calling this function.
 void bb_spi_byte(uint8_t byte)
 {
-    for (uint8_t i = 7; i >= 0; i--)
+    for (int8_t i = 7; i >= 0; i--)
     {
         uint8_t bit = (((byte & (1 << i)) >> i));
         bb_spi_bit(bit);
