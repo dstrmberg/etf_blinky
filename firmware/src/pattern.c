@@ -1,15 +1,17 @@
-
 #include "pattern.h"
 #include "bb_spi.h"
 #include "button.h"
+#include "adc.h"
+#include "timer.h"
 
 #include <stdint.h>
 #include <string.h>
 #include <util/delay.h>
 
-#define MAX_PATTERNS 3
-static patternFunc patterns[MAX_PATTERNS];
 
+#define NUM_LEDS     10
+#define MAX_PATTERNS 4
+static patternFunc patterns[MAX_PATTERNS];
 static uint8_t currPattern;
 
 struct LED_s
@@ -22,10 +24,42 @@ struct LED_s
 
 struct LED_s ledState[10];
 
-// TODO(noxet): make static again
-void staticColorRed(void);
-void staticColorGreen(void);
-void staticColorBlue(void);
+
+static void staticColorRed(void);
+static void staticColorGreen(void);
+static void staticColorBlue(void);
+static void patternAudioCheck(void);
+static void patternAudioLevel(uint16_t level);
+
+
+void patternInit(void)
+{
+    currPattern = MAX_PATTERNS - 1; // we call "patternNext" upon boot, so we start at the first
+    patterns[0] = staticColorRed;
+    patterns[1] = staticColorBlue;
+    patterns[2] = staticColorGreen;
+    patterns[3] = patternAudioCheck;
+}
+
+
+patternFunc patternNext(void)
+{
+    currPattern++;
+    if (currPattern == MAX_PATTERNS) currPattern = 0;
+
+    return patterns[currPattern];
+}
+
+
+patternFunc patternPrevious(void)
+{
+    if (currPattern == 0)
+        currPattern = MAX_PATTERNS - 1;
+    else
+        currPattern--;
+
+    return patterns[currPattern];
+}
 
 
 void setLeds(void)
@@ -35,13 +69,12 @@ void setLeds(void)
     bb_spi_byte(0);
     bb_spi_byte(0);
 
-
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < NUM_LEDS; i++)
     {
-        bb_spi_byte(0xEF);
-        bb_spi_byte(ledState[i].r);
+        bb_spi_byte(0xE1);
         bb_spi_byte(ledState[i].b);
         bb_spi_byte(ledState[i].g);
+        bb_spi_byte(ledState[i].r);
     }
 
     bb_spi_byte(255);
@@ -53,19 +86,16 @@ void setLeds(void)
 
 void clearLeds(void)
 {
-    memset(ledState, 0, 10 * sizeof(struct LED_s));
-
-    // TODO(noxet): fix this, should probably not be done here
-    // setLeds();
+    memset(ledState, 0, NUM_LEDS * sizeof(struct LED_s));
 }
 
 
 bool patternBootSequence(void)
 {
     clearLeds();
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < NUM_LEDS; i++)
     {
-        ledState[i].g = 1 + (i + 1) * 5;
+        ledState[i].g = 1 + (i + 1) * 10;
         setLeds();
         if (!btnPwrPressed()) return false;
         _delay_ms(100);
@@ -78,14 +108,14 @@ bool patternBootSequence(void)
 bool patternShutdownSequence(void)
 {
     clearLeds();
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < NUM_LEDS; i++)
     {
-        ledState[i].r = 127;
+        ledState[i].r = 1 + (i + 1) * 10;
     }
 
     setLeds();
 
-    for (int i = 9; i >= 0; i--)
+    for (int i = NUM_LEDS - 1; i >= 0; i--)
     {
         ledState[i].r = 0;
         if (!btnPwrPressed())
@@ -104,7 +134,7 @@ bool patternShutdownSequence(void)
 
 void patternBatteryLevel(uint8_t level)
 {
-    // clearLeds();
+    clearLeds();
     if (level > 250) ledState[9].r = 42;
     if (level > 225) ledState[8].r = 42;
     if (level > 200) ledState[7].r = 42;
@@ -119,9 +149,9 @@ void patternBatteryLevel(uint8_t level)
 }
 
 
-void patternAudioLevel(uint16_t level)
+static void patternAudioLevel(uint16_t level)
 {
-    // clearLeds();
+    clearLeds();
     if (level > 250)
     {
         ledState[9].r = 127;
@@ -171,94 +201,74 @@ void patternAudioLevel(uint16_t level)
 }
 
 
-void patternInit(void)
+static void patternAudioCheck(void)
 {
-    currPattern = 0;
-    patterns[0] = staticColorRed;
-    patterns[1] = staticColorBlue;
-    patterns[2] = staticColorGreen;
-}
-
-
-patternFunc patternNext(void)
-{
-    currPattern++;
-    if (currPattern == MAX_PATTERNS) currPattern = 0;
-
-    return patterns[currPattern];
-}
-
-
-patternFunc patternPrevious(void)
-{
-    if (currPattern == 0) currPattern = MAX_PATTERNS - 1;
-    else currPattern--;
-
-    return patterns[currPattern];
-}
-
-
-void staticColorRed(void)
-{
-    bb_spi_byte(0);
-    bb_spi_byte(0);
-    bb_spi_byte(0);
-    bb_spi_byte(0);
-
-    for (int i = 0; i < 10; i++)
+    static uint16_t max = 0;
+    static uint32_t prev = 0;
+    uint16_t dcoff = 400; // 350;
+    adc_start();
+    while (!adc_isDone())
     {
-        bb_spi_byte(0xE1);
-        bb_spi_byte(0);
-        bb_spi_byte(0);
-        bb_spi_byte(255);
+    }
+    uint16_t level = adc_get_val();
+    if (dcoff > level)
+    {
+        level = 0;
+    }
+    else
+    {
+        level -= dcoff;
     }
 
-    bb_spi_byte(255);
-    bb_spi_byte(255);
-    bb_spi_byte(255);
-    bb_spi_byte(255);
+    if (level >= max)
+    {
+        max = level;
+        patternAudioLevel(max);
+        prev = timerGetUptime();
+    }
+
+    if (timerGetUptime() >= prev + TIME_150_MS)
+    {
+        clearLeds();
+        max = 0;
+    }
 }
 
 
-void staticColorBlue(void)
+static void staticColorRed(void)
 {
-    bb_spi_byte(0);
-    bb_spi_byte(0);
-    bb_spi_byte(0);
-    bb_spi_byte(0);
+    clearLeds();
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < NUM_LEDS; i++)
     {
-        bb_spi_byte(0xE1);
-        bb_spi_byte(255);
-        bb_spi_byte(0);
-        bb_spi_byte(0);
+        ledState[i].r = 255;
     }
 
-    bb_spi_byte(255);
-    bb_spi_byte(255);
-    bb_spi_byte(255);
-    bb_spi_byte(255);
+    setLeds();
 }
 
 
-void staticColorGreen(void)
+static void staticColorBlue(void)
 {
-    bb_spi_byte(0);
-    bb_spi_byte(0);
-    bb_spi_byte(0);
-    bb_spi_byte(0);
+    clearLeds();
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < NUM_LEDS; i++)
     {
-        bb_spi_byte(0xE1);
-        bb_spi_byte(0);
-        bb_spi_byte(255);
-        bb_spi_byte(0);
+        ledState[i].b = 255;
     }
 
-    bb_spi_byte(255);
-    bb_spi_byte(255);
-    bb_spi_byte(255);
-    bb_spi_byte(255);
+    setLeds();
+}
+
+
+static void staticColorGreen(void)
+{
+    clearLeds();
+
+    for (int i = 0; i < NUM_LEDS; i++)
+    {
+        ledState[i].g = 255;
+    }
+
+    setLeds();
 }

@@ -10,10 +10,6 @@ void patternInit(void);
 bool patternBootSequence(void);
 bool patternShutdownSequence(void);
 void patternBatteryLevel(uint8_t level);
-void patternAudioLevel(uint16_t level);
 void clearLeds(void);
 patternFunc patternNext(void);
 patternFunc patternPrevious(void);
-
-// TODO(noxet): remove later
-void staticColorBlue();

@@ -88,7 +88,7 @@ ISR(BTN1_INTERRUPT)
         btn1Released++;
         ev.code = EV_BUTTON_RELEASED;
         ev.eventData = BUTTON1;
-        evAdd(ev, TIME_1_s);
+        evAdd(ev, TIME_1_S);
     }
 
     btn1Prev = btn1Curr;
