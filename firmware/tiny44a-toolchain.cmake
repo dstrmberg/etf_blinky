@@ -13,7 +13,7 @@ set(AVRDUDE_PRG "atmelice_isp")
 set(C_MCU "-mmcu=${MCU}")
 set(C_STD "-std=gnu99")
 set(C_WARN "-Wall -Wextra -Wshadow -Wdouble-promotion -fno-common")
-set(C_OPT "-Os")
+set(C_OPT "-Os -ffunction-sections -Wl,--gc-sections -fpack-struct -fshort-enums")
 set(C_DEBUG "-Og -ggdb -gdwarf-3")
 set(C_DIAG "-fdiagnostics-color=always")
 
