@@ -53,5 +53,6 @@ uint32_t timerGetUptime(void)
 
 ISR(TIM0_OVF_vect)
 {
+    // each increment is 8.192 ms
     uptime++;
 }
