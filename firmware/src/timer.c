@@ -1,8 +1,4 @@
-
 #include "timer.h"
-#include "pattern.h"
-#include "sys.h"
-#include "scheduler.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>

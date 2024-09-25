@@ -2,7 +2,6 @@
 #include "sys.h"
 #include "timer.h"
 
-#include "dl_utils.h"
 
 #ifndef DL_MAX_EVENTS
     #warning "DL_MAX_EVENTS not defined, defaults to 5"
@@ -11,12 +10,13 @@
 
 
 static volatile event_s g_eventQueue[DL_MAX_EVENTS];
-static volatile u8 g_eventToRun = 0;
-static volatile u8 g_nextFreeEvent = 0;
+static volatile uint8_t g_eventToRun = 0;
+static volatile uint8_t g_nextFreeEvent = 0;
+
 
 void evInit(void)
 {
-    u8 status = sys_enterCritical();
+    uint8_t status = sys_enterCritical();
     for (int i = 0; i < DL_MAX_EVENTS; i++)
     {
         g_eventQueue[i].code = EV_NOP;
@@ -38,7 +38,7 @@ bool evSchedule(event_s ev, uint32_t delay, bool reSchedule)
     if (g_eventQueue[g_nextFreeEvent].code != EV_NOP) return false;
 #endif
 
-    u8 status = sys_enterCritical();
+    uint8_t status = sys_enterCritical();
     if (g_eventQueue[g_nextFreeEvent].code != EV_NOP)
     {
         sys_exitCritical(status);
@@ -62,7 +62,7 @@ event_s evRun(void)
     if (g_eventQueue[g_eventToRun].code == EV_NOP) return (event_s) NEW_EVENT();
 #endif
 
-    u8 status = sys_enterCritical();
+    uint8_t status = sys_enterCritical();
     if (g_eventQueue[g_eventToRun].code == EV_NOP)
     {
         sys_exitCritical(status);
@@ -81,9 +81,7 @@ event_s evRun(void)
         return (event_s) NEW_EVENT();
     }
 
-
     sys_exitCritical(status);
 
     return ev;
 }
-

@@ -12,7 +12,10 @@ enum eventCode
     EV_BUTTON_ISR_DISABLED,
 };
 
-#define NEW_EVENT() { EV_NOP, 0, 0 }
+#define NEW_EVENT()                                                                                                    \
+    {                                                                                                                  \
+        EV_NOP, 0, 0                                                                                                   \
+    }
 
 
 typedef struct
@@ -27,4 +30,3 @@ void evInit(void);
 bool evAdd(event_s ev);
 bool evSchedule(event_s ev, uint32_t delay, bool reSchedule);
 event_s evRun(void);
-

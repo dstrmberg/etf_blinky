@@ -24,27 +24,28 @@ void sys_init(void)
     evInit();
     bb_spi_init();
     if (!patternBootSequence()) sys_powerOff();
-    
+
     // don't fully start the system until user releases the pwr button
-    while (btnPwrPressed());
-    
+    while (btnPwrPressed())
+        ;
+
     adc_init();
     adc_channel_audio();
     adc_interrupt_enable();
     timer_init();
     timer_start();
     sei();
-    //while (1) sys_audioCheck();
+    // while (1) sys_audioCheck();
 }
 
-u8 sys_enterCritical(void)
+uint8_t sys_enterCritical(void)
 {
-    u8 status = SREG;
+    uint8_t status = SREG;
     cli();
     return status;
 }
 
-void sys_exitCritical(u8 status)
+void sys_exitCritical(uint8_t status)
 {
     SREG = status;
 }
@@ -58,7 +59,8 @@ void sys_powerOn(void)
 void sys_powerOff(void)
 {
     // wait until the pwr button is released, otherwise we can not turn the device off
-    while (btnPwrPressed());
+    while (btnPwrPressed())
+        ;
     SYS_PWR_EN_PORT &= ~(1 << SYS_PWR_EN_PIN);
 }
 
@@ -79,8 +81,9 @@ void sys_batteryCheck(void)
     clearLeds();
     adc_setVbatChannel();
     adc_start();
-    while (!adc_isDone());
-    u8 level = adc_get_val();
+    while (!adc_isDone())
+        ;
+    uint8_t level = adc_get_val();
     patternBatteryLevel(level);
 }
 
@@ -90,11 +93,12 @@ int max = 0;
 
 void sys_audioCheck(void)
 {
-    //clearLeds();
-	u16 dcoff = 400;//350;
+    // clearLeds();
+    uint16_t dcoff = 400; // 350;
     adc_start();
-    while (!adc_isDone());
-    u16 level = adc_get_val();
+    while (!adc_isDone())
+        ;
+    uint16_t level = adc_get_val();
     if (dcoff > level)
     {
         level = 0;
@@ -103,13 +107,13 @@ void sys_audioCheck(void)
     {
         level -= dcoff;
     }
-	if (level >= max)
-	{
-		max = level;
-		patternAudioLevel(max);
-		timer_stop();
-		timer_start();
-	}
+    if (level >= max)
+    {
+        max = level;
+        patternAudioLevel(max);
+        timer_stop();
+        timer_start();
+    }
     /*
     xn = level;
     y_n = xn - xn1 + 0.99f * yn1;

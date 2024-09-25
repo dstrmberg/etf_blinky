@@ -21,7 +21,7 @@ int main(void)
 
     patternFunc currentPat = patternNext();
 
-    while(1)
+    while (1)
     {
 
         event_s ev = evRun();
@@ -51,5 +51,3 @@ int main(void)
         currentPat();
     }
 }
-
-

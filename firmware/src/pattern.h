@@ -1,17 +1,16 @@
 #pragma once
 
 #include "dl_utils.h"
-#include <stdbool.h>
 
 
-typedef void(*patternFunc)(void);
+typedef void (*patternFunc)(void);
 
 
 void patternInit(void);
 bool patternBootSequence(void);
 bool patternShutdownSequence(void);
-void patternBatteryLevel(u8 level);
-void patternAudioLevel(u16 level);
+void patternBatteryLevel(uint8_t level);
+void patternAudioLevel(uint16_t level);
 void clearLeds(void);
 patternFunc patternNext(void);
 patternFunc patternPrevious(void);
