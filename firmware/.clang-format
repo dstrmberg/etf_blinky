@@ -1,0 +1,30 @@
+BasedOnStyle: Microsoft
+AlignConsecutiveMacros:
+  Enabled: true
+BraceWrapping:
+  AfterCaseLabel: false
+  AfterClass: true
+  AfterControlStatement: Always
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterObjCDeclaration: true
+  AfterStruct: true
+  AfterUnion: false
+  AfterExternBlock: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeLambdaBody: false
+  BeforeWhile: false
+  IndentBraces: false
+  SplitEmptyFunction: true
+  SplitEmptyRecord: true
+  SplitEmptyNamespace: true
+IndentPPDirectives: BeforeHash
+SeparateDefinitionBlocks: Leave
+MaxEmptyLinesToKeep: 2
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+SpaceAfterCStyleCast: true
+SortIncludes: Never
+IndentCaseLabels: true
+AllowShortBlocksOnASingleLine: Always
