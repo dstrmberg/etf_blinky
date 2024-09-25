@@ -38,7 +38,7 @@ int main(void)
                 else if (ev.eventData == BUTTON2) sys_debugLedOn(false);
                 break;
             case EV_BUTTON_ISR_DISABLED:
-                PCMSK0 |= (1 << 7);
+                btnEnableISR(ev.eventData);
                 break;
         }
 

@@ -10,3 +10,5 @@ enum button
 
 void btnInit();
 bool btnPwrPressed(void);
+void btnDisableISR(enum button btn);
+void btnEnableISR(enum button btn);
