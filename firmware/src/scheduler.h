@@ -18,6 +18,9 @@ enum eventCode
     }
 
 
+// TODO(noxet): To save space, we can use a bitfield for the eventdata and timeToRun, e.g.
+// uint32_t eventData : 8;
+// uint32_t timeToRun : 24;
 typedef struct
 {
     enum eventCode code;
