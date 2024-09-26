@@ -203,6 +203,7 @@ static void patternAudioLevel(uint16_t level)
 
 static void patternAudioCheck(void)
 {
+    adcSetAudioChannel();
     static uint16_t max = 0;
     static uint32_t prev = 0;
     uint16_t dcoff = 400; // 350;

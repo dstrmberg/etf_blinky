@@ -10,6 +10,9 @@
 #include <util/delay.h>
 
 
+#define BATTERY_STATUS_SHOW_TIME    2500
+
+
 int main(void)
 {
     sys_debugLedOn(true);
@@ -31,7 +34,7 @@ int main(void)
                 if (btnPressed(BUTTON1) && btnPressed(BUTTON2))
                 {
                     sys_batteryCheck();
-                    _delay_ms(1000);
+                    _delay_ms(BATTERY_STATUS_SHOW_TIME);
                 }
                 else if (ev.eventData == BUTTON1)
                 {

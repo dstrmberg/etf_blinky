@@ -62,6 +62,7 @@ void adc_interrupt_disable()
     ADCSRA &= ~(1 << ADIE);
 }
 
+// TODO(noxet): do we need this?
 void adc_channel_toggle()
 {
     if ((ADMUX & 0b00111111) == 1)
@@ -76,13 +77,13 @@ void adc_channel_toggle()
     }
 }
 
-void adc_channel_audio()
+void adcSetAudioChannel()
 {
     ADMUX &= ~((1 << MUX5) | (1 << MUX4) | (1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0));
     ADMUX |= (1 << MUX0);
 }
 
-void adc_setVbatChannel(void)
+void adcSetVbatChannel(void)
 {
     ADMUX &= ~(1 << MUX0);
     ADMUX |= (1 << MUX1);

@@ -127,7 +127,7 @@ ISR(BTN2_INTERRUPT)
         btn2Pressed++;
         ev.code = EV_BUTTON_PRESSED;
         ev.eventData = BUTTON2;
-        evAdd(ev, TIME_NOW);
+        evAdd(ev, TIME_50_MS);
     }
     else if (btn2Curr < btn2Prev)
     {

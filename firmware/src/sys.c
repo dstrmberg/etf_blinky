@@ -31,7 +31,7 @@ void sys_init(void)
     }
 
     adc_init();
-    adc_channel_audio();
+    adcSetAudioChannel();
     adc_interrupt_enable();
     timerInit();
     timerStart();
@@ -81,7 +81,7 @@ void sys_debugLedOn(bool on)
 void sys_batteryCheck(void)
 {
     clearLeds();
-    adc_setVbatChannel();
+    adcSetVbatChannel();
     adc_start();
     while (!adc_isDone())
     {
