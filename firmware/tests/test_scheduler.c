@@ -1,3 +1,6 @@
+#include "scheduler.h"
+#include "timer.h"
+
 #include <stdio.h>
 #include <pthread.h>
 #include <stdatomic.h>
@@ -12,8 +15,6 @@ static atomic_int run = 1;
 #define ISRTAG  "\t\t\t[ISR]: "
 
 
-#include "scheduler.h"
-
 void sys_enterCritical(void)
 {
     pthread_mutex_lock(&g_mut);
@@ -26,7 +27,14 @@ void sys_exitCritical(void)
 }
 
 
-void* mainThread(void *arg)
+uint32_t timerGetUptime(void)
+{
+    // TODO(noxet): use system uptime
+    return 0;
+}
+
+
+void *mainThread(void *arg)
 {
     (void) arg;
 
@@ -38,15 +46,17 @@ void* mainThread(void *arg)
         {
             case EV_NOP:
                 printf(MAINTAG "EV_NOP: %d\n", ev.eventData);
-            break;
+                break;
             case EV_BUTTON_PRESSED:
                 printf(MAINTAG "EV_PRESSED: %d\n", ev.eventData);
                 processedEvents++;
-            break;
+                break;
             case EV_BUTTON_RELEASED:
                 printf(MAINTAG "EV_RELEASED: %d\n", ev.eventData);
                 processedEvents++;
-            break;
+                break;
+            case EV_BUTTON_ISR_DISABLED:
+                break;
         }
 
         //sleep(1);
@@ -57,7 +67,7 @@ void* mainThread(void *arg)
 }
 
 
-void* isrThread(void *arg)
+void *isrThread(void *arg)
 {
     (void) arg;
 
@@ -69,7 +79,7 @@ void* isrThread(void *arg)
         ev.code = EV_BUTTON_PRESSED;
         ev.eventData = nice++;
         printf(ISRTAG "Add event %d: %d\n", ev.code, ev.eventData);
-        bool ret = evAdd(ev);
+        bool ret = evAdd(ev, TIME_NOW);
         if (!ret) printf(ISRTAG "Event handler full!\n");
 
         //usleep(600000);
@@ -77,7 +87,7 @@ void* isrThread(void *arg)
         ev.code = EV_BUTTON_RELEASED;
         ev.eventData = chill++;
         printf(ISRTAG "Add event %d: %d\n", ev.code, ev.eventData);
-        ret = evAdd(ev);
+        ret = evAdd(ev, TIME_NOW);
         if (!ret) printf(ISRTAG "Event handler full!\n");
 
         //usleep(600000);
