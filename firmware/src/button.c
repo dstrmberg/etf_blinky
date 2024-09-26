@@ -37,6 +37,7 @@ void btnInit()
 }
 
 
+// TODO(noxet): consider replacing this with 3 macros instead
 inline void btnEnableISR(enum button btn)
 {
     switch (btn)
@@ -47,10 +48,13 @@ inline void btnEnableISR(enum button btn)
         case BUTTON2:
             PCMSK0 |= (1 << BTN2_PCINT);
             break;
+        default:
+            break;
     }
 }
 
 
+// TODO(noxet): consider replacing this with 3 macros instead
 inline void btnDisableISR(enum button btn)
 {
     switch (btn)
@@ -61,13 +65,24 @@ inline void btnDisableISR(enum button btn)
         case BUTTON2:
             PCMSK0 &= ~(1 << BTN2_PCINT);
             break;
+        default:
+            break;
     }
 }
 
 
-bool btnPwrPressed(void)
+// TODO(noxet): consider replacing this with 3 macros instead
+bool btnPressed(enum button btn)
 {
-    return (PINB & (1 << BTN_PWR)) ? true : false;
+    switch (btn)
+    {
+        case BUTTON1:
+            return (PINB & (1 << BTN1)) ? true : false;
+        case BUTTON2:
+            return (PINA & (1 << BTN2)) ? true : false;
+        case BUTTON_PWR:
+            return (PINB & (1 << BTN_PWR)) ? true : false;
+    }
 }
 
 
@@ -81,7 +96,7 @@ ISR(BTN1_INTERRUPT)
         btn1Pressed++;
         ev.code = EV_BUTTON_PRESSED;
         ev.eventData = BUTTON1;
-        evAdd(ev, TIME_NOW);
+        evAdd(ev, TIME_50_MS);
     }
     else if (btn1Curr < btn1Prev)
     {

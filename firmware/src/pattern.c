@@ -97,7 +97,7 @@ bool patternBootSequence(void)
     {
         ledState[i].g = 1 + (i + 1) * 10;
         setLeds();
-        if (!btnPwrPressed()) return false;
+            if (!btnPressed(BUTTON_PWR)) return false;
         _delay_ms(100);
     }
 
@@ -118,7 +118,7 @@ bool patternShutdownSequence(void)
     for (int i = NUM_LEDS - 1; i >= 0; i--)
     {
         ledState[i].r = 0;
-        if (!btnPwrPressed())
+        if (!btnPressed(BUTTON_PWR))
         {
             clearLeds();
             setLeds();
