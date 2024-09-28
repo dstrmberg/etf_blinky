@@ -22,8 +22,6 @@
 static volatile uint8_t btn1Prev = 0;
 static volatile uint8_t btn2Prev = 0;
 
-static volatile uint8_t btn1Pressed = 0, btn1Released = 0, btn2Pressed = 0, btn2Released = 0;
-
 
 void btnInit()
 {
@@ -93,17 +91,17 @@ ISR(BTN1_INTERRUPT)
     event_s ev = NEW_EVENT();
     if (btn1Curr > btn1Prev)
     {
-        btn1Pressed++;
         ev.code = EV_BUTTON_PRESSED;
         ev.eventData = BUTTON1;
+        // add small delay to be able to detect if user pressed both buttons at the same time
         evAdd(ev, TIME_50_MS);
     }
     else if (btn1Curr < btn1Prev)
     {
-        btn1Released++;
         ev.code = EV_BUTTON_RELEASED;
         ev.eventData = BUTTON1;
-        evAdd(ev, TIME_1_S);
+        // add delay here too, since we don't want to register release event before pressed
+        evAdd(ev, TIME_50_MS);
     }
 
     btn1Prev = btn1Curr;
@@ -124,17 +122,17 @@ ISR(BTN2_INTERRUPT)
     event_s ev = NEW_EVENT();
     if (btn2Curr > btn2Prev)
     {
-        btn2Pressed++;
         ev.code = EV_BUTTON_PRESSED;
         ev.eventData = BUTTON2;
+        // add small delay to be able to detect if user pressed both buttons at the same time
         evAdd(ev, TIME_50_MS);
     }
     else if (btn2Curr < btn2Prev)
     {
-        btn2Released++;
         ev.code = EV_BUTTON_RELEASED;
         ev.eventData = BUTTON2;
-        evAdd(ev, TIME_NOW);
+        // add delay here too, since we don't want to register release event before pressed
+        evAdd(ev, TIME_50_MS);
     }
 
     btn2Prev = btn2Curr;
