@@ -80,7 +80,6 @@ void sys_debugLedOn(bool on)
 
 void sys_batteryCheck(void)
 {
-    clearLeds();
     adcSetVbatChannel();
     adc_start();
     while (!adc_isDone())

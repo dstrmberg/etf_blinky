@@ -33,6 +33,8 @@ static void staticColorGreen(void);
 static void staticColorBlue(void);
 static void patternAudioCheck(void);
 static void patternAudioLevel(uint16_t level);
+static void setLeds(void);
+static void clearLeds(void);
 
 
 void patternInit(void)
@@ -90,34 +92,6 @@ void patternDecreaseIntensity(void)
     {
         ledIntensity -= LED_INTENSITY_STEP;
     }
-}
-
-
-void setLeds(void)
-{
-    bb_spi_byte(0);
-    bb_spi_byte(0);
-    bb_spi_byte(0);
-    bb_spi_byte(0);
-
-    for (int i = 0; i < NUM_LEDS; i++)
-    {
-        bb_spi_byte(0xE0 | ledIntensity);
-        bb_spi_byte(ledState[i].b);
-        bb_spi_byte(ledState[i].g);
-        bb_spi_byte(ledState[i].r);
-    }
-
-    bb_spi_byte(255);
-    bb_spi_byte(255);
-    bb_spi_byte(255);
-    bb_spi_byte(255);
-}
-
-
-void clearLeds(void)
-{
-    memset(ledState, 0, NUM_LEDS * sizeof(struct LED_s));
 }
 
 
@@ -303,4 +277,32 @@ static void staticColorGreen(void)
     }
 
     setLeds();
+}
+
+
+static void setLeds(void)
+{
+    bb_spi_byte(0);
+    bb_spi_byte(0);
+    bb_spi_byte(0);
+    bb_spi_byte(0);
+
+    for (int i = 0; i < NUM_LEDS; i++)
+    {
+        bb_spi_byte(0xE0 | ledIntensity);
+        bb_spi_byte(ledState[i].b);
+        bb_spi_byte(ledState[i].g);
+        bb_spi_byte(ledState[i].r);
+    }
+
+    bb_spi_byte(255);
+    bb_spi_byte(255);
+    bb_spi_byte(255);
+    bb_spi_byte(255);
+}
+
+
+static void clearLeds(void)
+{
+    memset(ledState, 0, NUM_LEDS * sizeof(struct LED_s));
 }
