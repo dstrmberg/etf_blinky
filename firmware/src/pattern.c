@@ -10,7 +10,7 @@
 
 
 #define NUM_LEDS     10
-#define MAX_PATTERNS 4
+#define MAX_PATTERNS 6
 static patternFunc patterns[MAX_PATTERNS];
 static uint8_t currPattern;
 
@@ -32,7 +32,10 @@ static void staticColorRed(void);
 static void staticColorGreen(void);
 static void staticColorBlue(void);
 static void patternAudioCheck(void);
+static void patternAudioMiddleOut(void);
+static void patternKnightRider(void);
 static void patternAudioLevel(uint16_t level);
+static void patternAudioMiddleOutLevel(uint16_t level);
 static void setLeds(void);
 static void clearLeds(void);
 
@@ -44,6 +47,8 @@ void patternInit(void)
     patterns[1] = staticColorBlue;
     patterns[2] = staticColorGreen;
     patterns[3] = patternAudioCheck;
+    patterns[4] = patternAudioMiddleOut;
+    patterns[5] = patternKnightRider;
 }
 
 
@@ -238,6 +243,140 @@ static void patternAudioCheck(void)
         clearLeds();
         max = 0;
     }
+}
+
+
+static void patternAudioMiddleOutLevel(uint16_t level)
+{
+    clearLeds();
+
+    if (level > 0)
+    {
+        ledState[4].r = 255;
+        ledState[4].g = 40;
+        ledState[5].r = 255;
+        ledState[5].g = 40;
+        _delay_ms(5);
+        setLeds();
+    }
+    if (level > 100)
+    {
+        ledState[3].r = 255;
+        ledState[3].g = 20;
+        ledState[6].r = 255;
+        ledState[6].g = 20;
+        _delay_ms(5);
+        setLeds();
+    }
+    if (level > 150)
+    {
+        ledState[2].r = 255;
+        ledState[2].g = 10;
+        ledState[7].r = 255;
+        ledState[7].g = 10;
+        _delay_ms(5);
+        setLeds();
+    }
+    if (level > 200)
+    {
+        ledState[1].r = 255;
+        ledState[1].g = 5;
+        ledState[8].r = 255;
+        ledState[8].g = 5;
+        _delay_ms(5);
+        setLeds();
+    }
+    if (level > 250)
+    {
+        ledState[0].r = 255;
+        ledState[0].g = 1;
+        ledState[9].r = 255;
+        ledState[9].g = 1;
+        _delay_ms(5);
+        setLeds();
+    }
+
+    setLeds();
+}
+
+
+static void patternAudioMiddleOut(void)
+{
+    adcSetAudioChannel();
+    static uint16_t max = 0;
+    static uint32_t prev = 0;
+    uint16_t dcoff = 400; // 350;
+    adc_start();
+    while (!adc_isDone())
+    {
+    }
+    uint16_t level = adc_get_val();
+    if (dcoff > level)
+    {
+        level = 0;
+    }
+    else
+    {
+        level -= dcoff;
+    }
+
+    if (level >= max)
+    {
+        max = level;
+        patternAudioMiddleOutLevel(max);
+        prev = timerGetUptime();
+    }
+
+    if (timerGetUptime() >= prev + TIME_150_MS)
+    {
+        clearLeds();
+        max = 0;
+    }
+}
+
+
+static void patternKnightRider(void)
+{
+    adcSetAudioChannel();
+    static uint32_t prev = 0;
+    static uint32_t dt = 0;
+    static uint8_t dir = 1;
+    static uint8_t idx = 1;
+    const uint16_t dcoff = 400; // 350;
+    adc_start();
+    while (!adc_isDone())
+    {
+    }
+    uint16_t level = adc_get_val();
+    if (dcoff > level)
+    {
+        level = 0;
+    }
+    else
+    {
+        level -= dcoff;
+    }
+
+    const uint32_t currTime = timerGetUptime();
+    if (level >= 200)
+    {
+        dt = currTime - prev;
+        clearLeds();
+        idx = 0;
+        _delay_ms(100);
+    }
+
+    if (currTime - prev > dt)
+    {
+        clearLeds();
+        ledState[idx].r = 255;
+        if (idx == 9) dir = -1;
+        if (idx == 0) dir = 1;
+        idx += dir;
+        setLeds();
+    }
+
+    prev = currTime;
 }
 
 
