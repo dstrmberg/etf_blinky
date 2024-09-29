@@ -7,10 +7,11 @@
 #include <stdint.h>
 #include <string.h>
 #include <util/delay.h>
+#include <stdfix.h>
 
 
 #define NUM_LEDS     10
-#define MAX_PATTERNS 6
+#define MAX_PATTERNS 3
 static patternFunc patterns[MAX_PATTERNS];
 static uint8_t currPattern;
 
@@ -28,9 +29,6 @@ struct LED_s
 struct LED_s ledState[10];
 
 
-static void staticColorRed(void);
-static void staticColorGreen(void);
-static void staticColorBlue(void);
 static void patternAudioCheck(void);
 static void patternAudioMiddleOut(void);
 static void patternKnightRider(void);
@@ -43,9 +41,6 @@ static void clearLeds(void);
 void patternInit(void)
 {
     currPattern = MAX_PATTERNS - 1; // we call "patternNext" upon boot, so we start at the first
-    patterns[0] = staticColorRed;
-    patterns[1] = staticColorBlue;
-    patterns[2] = staticColorGreen;
     patterns[0] = patternAudioCheck;
     patterns[1] = patternAudioMiddleOut;
     patterns[2] = patternKnightRider;
