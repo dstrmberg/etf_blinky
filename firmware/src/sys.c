@@ -4,7 +4,6 @@
 #include "bb_spi.h"
 #include "button.h"
 #include "pattern.h"
-#include "scheduler.h"
 #include "timer.h"
 
 #include <avr/interrupt.h>
@@ -21,12 +20,12 @@ void sys_init(void)
     DDRB |= SYS_DBG_LED;
     btnInit();
     sys_powerOn();
-    evInit();
+    //evInit();
     bb_spi_init();
     if (!patternBootSequence()) sys_powerOff();
 
     // don't fully start the system until user releases the pwr button
-    while (btnPressed(BUTTON_PWR))
+    while (BTNPWR_IS_PRESSED())
     {
     }
 
@@ -60,7 +59,7 @@ void sys_powerOn(void)
 void sys_powerOff(void)
 {
     // wait until the pwr button is released, otherwise we can not turn the device off
-    while (btnPressed(BUTTON_PWR))
+    while (BTNPWR_IS_PRESSED())
     {
     }
     SYS_PWR_EN_PORT &= ~(1 << SYS_PWR_EN_PIN);

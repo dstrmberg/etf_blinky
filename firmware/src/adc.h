@@ -10,7 +10,6 @@ bool adc_isDone(void);
 uint16_t adc_get_val();
 void adc_interrupt_enable();
 void adc_interrupt_disable();
-void adc_channel_toggle();
 void adc_channel_vbat_level();
 
 void adcSetAudioChannel();

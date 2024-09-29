@@ -46,9 +46,9 @@ void patternInit(void)
     patterns[0] = staticColorRed;
     patterns[1] = staticColorBlue;
     patterns[2] = staticColorGreen;
-    patterns[3] = patternAudioCheck;
-    patterns[4] = patternAudioMiddleOut;
-    patterns[5] = patternKnightRider;
+    patterns[0] = patternAudioCheck;
+    patterns[1] = patternAudioMiddleOut;
+    patterns[2] = patternKnightRider;
 }
 
 
@@ -107,7 +107,7 @@ bool patternBootSequence(void)
     {
         ledState[i].g = 1 + (i + 1) * 10;
         setLeds();
-        if (!btnPressed(BUTTON_PWR)) return false;
+        if (!BTNPWR_IS_PRESSED()) return false;
         _delay_ms(100);
     }
 
@@ -128,7 +128,7 @@ bool patternShutdownSequence(void)
     for (int i = NUM_LEDS - 1; i >= 0; i--)
     {
         ledState[i].r = 0;
-        if (!btnPressed(BUTTON_PWR))
+        if (!BTNPWR_IS_PRESSED())
         {
             clearLeds();
             setLeds();
@@ -385,7 +385,7 @@ static void patternKnightRider(void)
     }
 }
 
-
+/*
 static void staticColorRed(void)
 {
     clearLeds();
@@ -423,7 +423,7 @@ static void staticColorGreen(void)
 
     setLeds();
 }
-
+*/
 
 static void setLeds(void)
 {
