@@ -340,7 +340,7 @@ static void patternKnightRider(void)
     adcSetAudioChannel();
     static uint32_t prevBPM = 0;
     static uint32_t prevAnim = 0;
-    static uint32_t dt = 0;
+    static uint32_t dt = 10;
     static uint8_t dir = 1;
     static uint8_t idx = 1;
     const uint16_t dcoff = 400; // 350;
@@ -361,9 +361,10 @@ static void patternKnightRider(void)
     const uint32_t currTime = timerGetUptime();
     if (level >= 200)
     {
-        dt = currTime - prevBPM;
+        // need to cover 8 LEDs in this time
+        dt = (currTime - prevBPM) >> 3;
         clearLeds();
-        idx = 0;
+        //idx = 1;
         prevBPM = currTime;
         _delay_ms(100);
     }
@@ -371,13 +372,17 @@ static void patternKnightRider(void)
     if (currTime - prevAnim > dt)
     {
         clearLeds();
+        ledState[idx - 1].r = 200;
+        ledState[idx - 1].g = 10;
         ledState[idx].r = 255;
-        if (idx == 9) dir = -1;
-        if (idx == 0) dir = 1;
+        ledState[idx + 1].r = 200;
+        ledState[idx + 1].g = 10;
+        if (idx == 8) dir = -1;
+        if (idx == 1) dir = 1;
         idx += dir;
         setLeds();
         prevAnim = currTime;
-    }    
+    }
 }
 
 
