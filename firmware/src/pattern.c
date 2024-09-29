@@ -14,6 +14,9 @@
 static patternFunc patterns[MAX_PATTERNS];
 static uint8_t currPattern;
 
+#define LED_INTENSITY_STEP 8
+static uint8_t ledIntensity = 1;
+
 struct LED_s
 {
     uint8_t r;
@@ -62,6 +65,34 @@ patternFunc patternPrevious(void)
 }
 
 
+void patternIncreaseIntensity(void)
+{
+    // We only have 5 bits in the protocol, hence 31 being max
+    if (ledIntensity > 31 - LED_INTENSITY_STEP)
+    {
+        ledIntensity = 31;
+    }
+    else
+    {
+        ledIntensity += LED_INTENSITY_STEP;
+    }
+}
+
+
+void patternDecreaseIntensity(void)
+{
+    // min val is 1 otherwise the LEDs will be turned off, which might be confusing
+    if (ledIntensity < LED_INTENSITY_STEP)
+    {
+        ledIntensity = 1;
+    }
+    else
+    {
+        ledIntensity -= LED_INTENSITY_STEP;
+    }
+}
+
+
 void setLeds(void)
 {
     bb_spi_byte(0);
@@ -71,7 +102,7 @@ void setLeds(void)
 
     for (int i = 0; i < NUM_LEDS; i++)
     {
-        bb_spi_byte(0xE1);
+        bb_spi_byte(0xE0 | ledIntensity);
         bb_spi_byte(ledState[i].b);
         bb_spi_byte(ledState[i].g);
         bb_spi_byte(ledState[i].r);
@@ -97,7 +128,7 @@ bool patternBootSequence(void)
     {
         ledState[i].g = 1 + (i + 1) * 10;
         setLeds();
-            if (!btnPressed(BUTTON_PWR)) return false;
+        if (!btnPressed(BUTTON_PWR)) return false;
         _delay_ms(100);
     }
 

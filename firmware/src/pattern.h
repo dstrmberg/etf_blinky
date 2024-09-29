@@ -13,3 +13,5 @@ void patternBatteryLevel(uint8_t level);
 void clearLeds(void);
 patternFunc patternNext(void);
 patternFunc patternPrevious(void);
+void patternIncreaseIntensity(void);
+void patternDecreaseIntensity(void);

@@ -24,7 +24,6 @@ enum state
 
 int main(void)
 {
-    //sys_debugLedOn(true);
     sys_init();
 
     enum state st = ST_IDLE;
@@ -61,8 +60,7 @@ int main(void)
                     }
                     else
                     {
-                        //TODO: increase light
-                        sys_debugLedOn(true);
+                        patternIncreaseIntensity();
                     }
                 }
                 break;
@@ -75,8 +73,7 @@ int main(void)
                     }
                     else
                     {
-                        //TODO: decrease light
-                        sys_debugLedOn(false);
+                        patternDecreaseIntensity();
                     }
                 }
                 break;
@@ -90,7 +87,6 @@ int main(void)
                 {
                     if (ev.eventData == BUTTON1)
                     {
-                        // TODO: decrease light
                         st = ST_LIGHT_DECREASE;
                     }
                 }
@@ -105,7 +101,6 @@ int main(void)
                 {
                     if (ev.eventData == BUTTON2)
                     {
-                        // TODO: increase light
                         st = ST_LIGHT_INCREASE;
                     }
                 }
