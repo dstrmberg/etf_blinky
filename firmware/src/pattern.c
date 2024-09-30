@@ -23,7 +23,7 @@ struct LED_s
     uint8_t r;
     uint8_t g;
     uint8_t b;
-    uint8_t alpha;
+    uint8_t alpha; //TODO(noxet): remove. seems to increase flash by 4B??
 };
 
 struct LED_s ledState[10];
@@ -206,11 +206,10 @@ static void patternAudioLevel(uint16_t level)
 }
 
 
-static void patternAudioCheck(void)
+
+static uint16_t getAudioAdcVal(void)
 {
     adcSetAudioChannel();
-    static uint16_t max = 0;
-    static uint32_t prev = 0;
     uint16_t dcoff = 400; // 350;
     adc_start();
     while (!adc_isDone())
@@ -226,6 +225,16 @@ static void patternAudioCheck(void)
         level -= dcoff;
     }
 
+    return level;
+}
+
+
+static void patternAudioCheck(void)
+{
+    static uint16_t max = 0;
+    static uint32_t prev = 0;
+    uint16_t level = getAudioAdcVal();
+
     if (level >= max)
     {
         max = level;
@@ -240,11 +249,24 @@ static void patternAudioCheck(void)
     }
 }
 
-
+uint8_t levels[5] = {0, 100, 150, 200, 250};
 static void patternAudioMiddleOutLevel(uint16_t level)
 {
     clearLeds();
 
+    for (int i = 0; i < 5; i++)
+    {
+        if (level > levels[i])
+        {
+            ledState[4-i].r = 255;
+            ledState[4-i].g = 40 - i*9;
+            ledState[5+i].r = 255;
+            ledState[5+i].g = 40 - i*9;
+            _delay_ms(5);
+            setLeds();
+        }
+    }
+/*
     if (level > 0)
     {
         ledState[4].r = 255;
@@ -290,30 +312,16 @@ static void patternAudioMiddleOutLevel(uint16_t level)
         _delay_ms(5);
         setLeds();
     }
-
+*/
     setLeds();
 }
 
 
 static void patternAudioMiddleOut(void)
 {
-    adcSetAudioChannel();
     static uint16_t max = 0;
     static uint32_t prev = 0;
-    uint16_t dcoff = 400; // 350;
-    adc_start();
-    while (!adc_isDone())
-    {
-    }
-    uint16_t level = adc_get_val();
-    if (dcoff > level)
-    {
-        level = 0;
-    }
-    else
-    {
-        level -= dcoff;
-    }
+    uint16_t level = getAudioAdcVal();
 
     if (level >= max)
     {
@@ -332,26 +340,12 @@ static void patternAudioMiddleOut(void)
 
 static void patternKnightRider(void)
 {
-    adcSetAudioChannel();
     static uint32_t prevBPM = 0;
     static uint32_t prevAnim = 0;
     static uint32_t dt = 10;
     static uint8_t dir = 1;
     static uint8_t idx = 1;
-    const uint16_t dcoff = 400; // 350;
-    adc_start();
-    while (!adc_isDone())
-    {
-    }
-    uint16_t level = adc_get_val();
-    if (dcoff > level)
-    {
-        level = 0;
-    }
-    else
-    {
-        level -= dcoff;
-    }
+    uint16_t level = getAudioAdcVal();
 
     const uint32_t currTime = timerGetUptime();
     if (level >= 200)
@@ -359,8 +353,11 @@ static void patternKnightRider(void)
         // need to cover 8 LEDs in this time
         dt = (currTime - prevBPM) >> 3;
         clearLeds();
+        // TODO(noxet): schedule event to syncronize every 5s? i.e. set idx to 1 when kick hits
         //idx = 1;
         prevBPM = currTime;
+        // "debounce" the reading, since the level for a kick hit may be longer than 1 ADC reading
+        // causing a really quick "BPM"
         _delay_ms(100);
     }
 
@@ -380,45 +377,6 @@ static void patternKnightRider(void)
     }
 }
 
-/*
-static void staticColorRed(void)
-{
-    clearLeds();
-
-    for (int i = 0; i < NUM_LEDS; i++)
-    {
-        ledState[i].r = 255;
-    }
-
-    setLeds();
-}
-
-
-static void staticColorBlue(void)
-{
-    clearLeds();
-
-    for (int i = 0; i < NUM_LEDS; i++)
-    {
-        ledState[i].b = 255;
-    }
-
-    setLeds();
-}
-
-
-static void staticColorGreen(void)
-{
-    clearLeds();
-
-    for (int i = 0; i < NUM_LEDS; i++)
-    {
-        ledState[i].g = 255;
-    }
-
-    setLeds();
-}
-*/
 
 static void setLeds(void)
 {
