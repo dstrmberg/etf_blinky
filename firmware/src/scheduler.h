@@ -9,6 +9,7 @@ enum eventCode
     EV_NOP,
     EV_BUTTON_PRESSED,
     EV_BUTTON_RELEASED,
+    EV_BUTTON_HOLD,
     EV_BUTTON_ISR_DISABLED,
 };
 

@@ -12,5 +12,7 @@ bool patternShutdownSequence(void);
 void patternBatteryLevel(uint8_t level);
 patternFunc patternNext(void);
 patternFunc patternPrevious(void);
+void patternNextColor(void);
+void patternPreviousColor(void);
 void patternIncreaseIntensity(void);
 void patternDecreaseIntensity(void);

@@ -4,6 +4,7 @@
 #include "sys.h"
 #include "bb_spi.h"
 #include "button.h"
+#include "timer.h"
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -15,10 +16,12 @@
 enum state
 {
     ST_IDLE,
+    ST_BTN2_PRESSED,
+    ST_BTN1_PRESSED,
     ST_LIGHT_INCREASE,
     ST_LIGHT_DECREASE,
-    ST_PATTERN_NEXT,
-    ST_PATTERN_PREV,
+    ST_COLOR_NEXT,
+    ST_COLOR_PREV,
 };
 
 
@@ -47,37 +50,47 @@ int main(void)
                     }
                     else
                     {
-                        st = (ev.eventData == BUTTON1) ? ST_PATTERN_PREV : ST_PATTERN_NEXT;
+                        st = (ev.eventData == BUTTON1) ? ST_BTN1_PRESSED : ST_BTN2_PRESSED;
+                        event_s evHold;
+                        evHold.code = EV_BUTTON_HOLD;
+                        evHold.eventData = ev.eventData;
+                        evAdd(evHold, TIME_500_MS);
                     }
                 }
                 break;
-            case ST_LIGHT_INCREASE:
+            case ST_BTN1_PRESSED:
                 if (ev.code == EV_BUTTON_RELEASED)
+                {
+                    if (ev.eventData == BUTTON1) currentPat = patternPrevious();
+                    st = ST_IDLE;
+                }
+                else if (ev.code == EV_BUTTON_PRESSED)
                 {
                     if (ev.eventData == BUTTON1)
                     {
+                        // This is an error, we should have detected button release before a new pressed event,
+                        // most likely due to missed event
                         st = ST_IDLE;
                     }
                     else
                     {
-                        patternIncreaseIntensity();
+                        st = ST_COLOR_NEXT;
                     }
                 }
-                break;
-            case ST_LIGHT_DECREASE:
-                if (ev.code == EV_BUTTON_RELEASED)
+                else if (ev.code == EV_BUTTON_HOLD)
                 {
-                    if (ev.eventData == BUTTON2)
-                    {
-                        st = ST_IDLE;
-                    }
-                    else
+                    if (ev.eventData == BUTTON1)
                     {
                         patternDecreaseIntensity();
+                        event_s evHold;
+                        evHold.code = EV_BUTTON_HOLD;
+                        evHold.eventData = ev.eventData;
+                        evAdd(evHold, TIME_500_MS);
+                        st = ST_LIGHT_DECREASE;
                     }
                 }
                 break;
-            case ST_PATTERN_NEXT:
+            case ST_BTN2_PRESSED:
                 if (ev.code == EV_BUTTON_RELEASED)
                 {
                     if (ev.eventData == BUTTON2) currentPat = patternNext();
@@ -87,21 +100,79 @@ int main(void)
                 {
                     if (ev.eventData == BUTTON1)
                     {
-                        st = ST_LIGHT_DECREASE;
+                        st = ST_COLOR_PREV;
+                    }
+                    else
+                    {
+                        // This is an error, we should have detected button release before a new pressed event,
+                        // most likely due to missed event
+                        st = ST_IDLE;
                     }
                 }
-                break;
-            case ST_PATTERN_PREV:
-                if (ev.code == EV_BUTTON_RELEASED)
-                {
-                    if (ev.eventData == BUTTON1) currentPat = patternPrevious();
-                    st = ST_IDLE;
-                }
-                else if (ev.code == EV_BUTTON_PRESSED)
+                else if (ev.code == EV_BUTTON_HOLD)
                 {
                     if (ev.eventData == BUTTON2)
                     {
+                        patternIncreaseIntensity();
+                        event_s evHold;
+                        evHold.code = EV_BUTTON_HOLD;
+                        evHold.eventData = ev.eventData;
+                        evAdd(evHold, TIME_500_MS);
                         st = ST_LIGHT_INCREASE;
+                    }
+                }
+                break;
+            case ST_LIGHT_INCREASE:
+                if (ev.code == EV_BUTTON_RELEASED)
+                {
+                    if (ev.eventData == BUTTON2) st = ST_IDLE;
+                }
+                else if (ev.code == EV_BUTTON_HOLD)
+                {
+                    patternIncreaseIntensity();
+                    event_s evHold;
+                    evHold.code = EV_BUTTON_HOLD;
+                    evHold.eventData = ev.eventData;
+                    evAdd(evHold, TIME_500_MS);
+                }
+                break;
+            case ST_LIGHT_DECREASE:
+                if (ev.code == EV_BUTTON_RELEASED)
+                {
+                    if (ev.eventData == BUTTON1) st = ST_IDLE;
+                }
+                else if (ev.code == EV_BUTTON_HOLD)
+                {
+                    patternDecreaseIntensity();
+                    event_s evHold;
+                    evHold.code = EV_BUTTON_HOLD;
+                    evHold.eventData = ev.eventData;
+                    evAdd(evHold, TIME_500_MS);
+                }
+                break;
+            case ST_COLOR_NEXT:
+                if (ev.code == EV_BUTTON_RELEASED)
+                {
+                    if (ev.eventData == BUTTON1)
+                    {
+                        st = ST_IDLE;
+                    }
+                    else
+                    {
+                        patternNextColor();
+                    }
+                }
+                break;
+            case ST_COLOR_PREV:
+                if (ev.code == EV_BUTTON_RELEASED)
+                {
+                    if (ev.eventData == BUTTON2)
+                    {
+                        st = ST_IDLE;
+                    }
+                    else
+                    {
+                        patternPreviousColor();
                     }
                 }
                 break;

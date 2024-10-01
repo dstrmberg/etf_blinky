@@ -2,21 +2,32 @@
 #include "bb_spi.h"
 #include "button.h"
 #include "adc.h"
+#include "sys.h"
 #include "timer.h"
 
 #include <stdint.h>
 #include <string.h>
 #include <util/delay.h>
-#include <stdfix.h>
+//#include <stdfix.h>
 
 
 #define NUM_LEDS     10
-#define MAX_PATTERNS 3
+#define MAX_PATTERNS 4
 static patternFunc patterns[MAX_PATTERNS];
 static uint8_t currPattern;
 
 #define LED_INTENSITY_STEP 8
 static uint8_t ledIntensity = 1;
+
+enum color
+{
+    RED = 0,
+    GREEN,
+    BLUE,
+
+    COLOR_MAX
+};
+
 
 struct LED_s
 {
@@ -26,7 +37,9 @@ struct LED_s
     uint8_t alpha; //TODO(noxet): remove. seems to increase flash by 4B??
 };
 
-struct LED_s ledState[10];
+
+static enum color currColor = RED;
+static struct LED_s ledState[10];
 
 
 static void patternAudioCheck(void);
@@ -37,6 +50,29 @@ static void patternAudioMiddleOutLevel(uint16_t level);
 static void setLeds(void);
 static void clearLeds(void);
 
+//TODO(noxet): remove this later
+static void staticColorRed(void)
+{
+    clearLeds();
+    for (int i = 0; i < 10; i++)
+    {
+        switch (currColor)
+        {
+            case RED:
+                ledState[i].r = 255;
+                break;
+            case GREEN:
+                ledState[i].g = 255;
+                break;
+            case BLUE:
+                ledState[i].b = 255;
+                break;
+            default:
+                break;
+        }
+    }
+    setLeds();
+}
 
 void patternInit(void)
 {
@@ -44,6 +80,7 @@ void patternInit(void)
     patterns[0] = patternAudioCheck;
     patterns[1] = patternAudioMiddleOut;
     patterns[2] = patternKnightRider;
+    patterns[3] = staticColorRed;
 }
 
 
@@ -95,6 +132,34 @@ void patternDecreaseIntensity(void)
 }
 
 
+void patternNextColor(void)
+{
+    if (currColor == COLOR_MAX)
+    {
+        currColor = 0;
+    }
+    else
+    {
+        currColor++;
+    }
+    sys_debugLedOn(true);
+}
+
+
+void patternPreviousColor(void)
+{
+    if (currColor == 0)
+    {
+        currColor = COLOR_MAX - 1;
+    }
+    else
+    {
+        currColor--;
+    }
+    sys_debugLedOn(false);
+}
+
+
 bool patternBootSequence(void)
 {
     clearLeds();
@@ -129,7 +194,7 @@ bool patternShutdownSequence(void)
             setLeds();
             return false;
         }
-        _delay_ms(75);
+        _delay_ms(100);
         setLeds();
     }
 
@@ -206,7 +271,6 @@ static void patternAudioLevel(uint16_t level)
 }
 
 
-
 static uint16_t getAudioAdcVal(void)
 {
     adcSetAudioChannel();
@@ -258,15 +322,15 @@ static void patternAudioMiddleOutLevel(uint16_t level)
     {
         if (level > levels[i])
         {
-            ledState[4-i].r = 255;
-            ledState[4-i].g = 40 - i*9;
-            ledState[5+i].r = 255;
-            ledState[5+i].g = 40 - i*9;
+            ledState[4 - i].r = 255;
+            ledState[4 - i].g = 40 - i * 9;
+            ledState[5 + i].r = 255;
+            ledState[5 + i].g = 40 - i * 9;
             _delay_ms(5);
             setLeds();
         }
     }
-/*
+    /*
     if (level > 0)
     {
         ledState[4].r = 255;
