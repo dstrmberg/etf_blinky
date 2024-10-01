@@ -205,16 +205,15 @@ bool patternShutdownSequence(void)
 void patternBatteryLevel(uint8_t level)
 {
     clearLeds();
-    if (level > 250) ledState[9].r = 42;
-    if (level > 225) ledState[8].r = 42;
-    if (level > 200) ledState[7].r = 42;
-    if (level > 175) ledState[6].r = 42;
-    if (level > 150) ledState[5].r = 42;
-    if (level > 125) ledState[4].r = 42;
-    if (level > 100) ledState[3].r = 42;
-    if (level > 75) ledState[2].r = 42;
-    if (level > 50) ledState[1].r = 42;
-    if (level > 0) ledState[0].r = 42;
+    uint8_t limit = 0;
+    for (int i = 0; i < 10; i++)
+    {
+        if (level > limit)
+        {
+            ledState[i].r = 42;
+        }
+        limit += 25;
+    }
     setLeds();
 }
 
