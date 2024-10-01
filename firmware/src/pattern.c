@@ -202,17 +202,27 @@ bool patternShutdownSequence(void)
 }
 
 
+/**
+ * The practical maximum of the batteries are 5V (3 * 1.65).
+ * This is being divided by 2 due to the resistor divider, thus we will
+ * read max 2.5V at the ADC. This value is then shifted down by 2 
+ * to fit into a uint8 variable.
+ *
+ * Thus, the maximum we will read is ca. 142, thus we set the upper limit around 130
+ * to denote fully charged batteries. We set the lower limit to 50 (around 2V),
+ * and we linearly interpolate the battery voltage from here.
+ */
 void patternBatteryLevel(uint8_t level)
 {
     clearLeds();
-    uint8_t limit = 0;
+    uint8_t limit = 50; // This is around 2V battery voltage.
     for (int i = 0; i < 10; i++)
     {
         if (level > limit)
         {
             ledState[i].r = 42;
         }
-        limit += 25;
+        limit += 9;
     }
     setLeds();
 }

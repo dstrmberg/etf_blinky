@@ -84,6 +84,7 @@ void sys_batteryCheck(void)
     while (!adc_isDone())
     {
     }
-    uint8_t level = adc_get_val();
+    // We don't need all that (10-bit) resolution
+    uint8_t level = adc_get_val() >> 2;
     patternBatteryLevel(level);
 }
