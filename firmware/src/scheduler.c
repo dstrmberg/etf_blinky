@@ -5,7 +5,7 @@
 
 #ifndef DL_MAX_EVENTS
     #warning "DL_MAX_EVENTS not defined, defaults to 5"
-    #define DL_MAX_EVENTS 5
+    #define DL_MAX_EVENTS 10
 #endif
 
 
@@ -82,6 +82,7 @@ static bool evSchedule(event_s ev, uint32_t delay, enum scheduleMode mode)
     if (g_eventQueue[g_nextFreeEvent].code != EV_NOP)
     {
         sys_exitCritical(status);
+        sys_debugLedOn(true);
         return false;
     }
 

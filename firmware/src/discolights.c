@@ -133,7 +133,7 @@ int main(void)
                     event_s evHold;
                     evHold.code = EV_BUTTON_HOLD;
                     evHold.eventData = ev.eventData;
-                    evAdd(evHold, TIME_500_MS);
+                    evAdd(evHold, TIME_50_MS);
                 }
                 break;
             case ST_LIGHT_DECREASE:
@@ -147,7 +147,7 @@ int main(void)
                     event_s evHold;
                     evHold.code = EV_BUTTON_HOLD;
                     evHold.eventData = ev.eventData;
-                    evAdd(evHold, TIME_500_MS);
+                    evAdd(evHold, TIME_50_MS);
                 }
                 break;
             case ST_COLOR_NEXT:

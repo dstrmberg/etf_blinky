@@ -16,7 +16,7 @@
 static patternFunc patterns[MAX_PATTERNS];
 static uint8_t currPattern;
 
-#define LED_INTENSITY_STEP 8
+#define LED_INTENSITY_STEP 1
 static uint8_t ledIntensity = 1;
 
 enum color
@@ -29,7 +29,7 @@ enum color
 };
 
 
-struct LED_s
+struct __attribute__((packed)) LED_s
 {
     uint8_t r;
     uint8_t g;
@@ -107,7 +107,7 @@ patternFunc patternPrevious(void)
 void patternIncreaseIntensity(void)
 {
     // We only have 5 bits in the protocol, hence 31 being max
-    if (ledIntensity > 31 - LED_INTENSITY_STEP)
+    if (ledIntensity >= 31 - LED_INTENSITY_STEP)
     {
         ledIntensity = 31;
     }
@@ -121,7 +121,7 @@ void patternIncreaseIntensity(void)
 void patternDecreaseIntensity(void)
 {
     // min val is 1 otherwise the LEDs will be turned off, which might be confusing
-    if (ledIntensity < LED_INTENSITY_STEP)
+    if (ledIntensity <= LED_INTENSITY_STEP)
     {
         ledIntensity = 1;
     }
@@ -142,7 +142,6 @@ void patternNextColor(void)
     {
         currColor++;
     }
-    sys_debugLedOn(true);
 }
 
 
@@ -156,7 +155,6 @@ void patternPreviousColor(void)
     {
         currColor--;
     }
-    sys_debugLedOn(false);
 }
 
 
@@ -230,51 +228,91 @@ void patternBatteryLevel(uint8_t level)
 
 static void patternAudioLevel(uint16_t level)
 {
-    clearLeds();
+    //clearLeds();
+
+    uint8_t majColor = 0;
+    uint8_t minColor = 0;
+
+    switch (currColor)
+    {
+        case RED:
+            majColor = RED;
+            minColor = GREEN;
+        break;
+        case GREEN:
+            majColor = GREEN;
+            minColor = BLUE;
+        break;
+        case BLUE:
+            majColor = BLUE;
+            minColor = RED;
+        break;
+    }
+
     if (level > 250)
     {
-        ledState[9].r = 127;
+        // index the LED struct, the hacky way..
+        *((uint8_t *) (&ledState[9]) + majColor) = 127;
     }
     if (level > 225)
     {
-        ledState[8].r = 127;
+        //ledState[8].r = 127;
+        *((uint8_t *) (&ledState[8]) + majColor) = 127;
+        *((uint8_t *) (&ledState[5]) + minColor) = 1;
     }
     if (level > 200)
     {
-        ledState[7].r = 127;
+        //ledState[7].r = 127;
+        *((uint8_t *) (&ledState[7]) + majColor) = 127;
+        *((uint8_t *) (&ledState[5]) + minColor) = 5;
     }
     if (level > 175)
     {
-        ledState[6].r = 127;
+        //ledState[6].r = 127;
+        *((uint8_t *) (&ledState[6]) + majColor) = 127;
+        *((uint8_t *) (&ledState[5]) + minColor) = 10;
     }
     if (level > 150)
     {
-        ledState[5].r = 127;
+        *((uint8_t *) (&ledState[5]) + majColor) = 127;
+        *((uint8_t *) (&ledState[5]) + minColor) = 15;
+        //ledState[5].r = 127;
+        //ledState[5].g = 1;
     }
     if (level > 125)
     {
-        ledState[4].r = 127;
-        ledState[4].g = 1;
+        *((uint8_t *) (&ledState[4]) + majColor) = 127;
+        *((uint8_t *) (&ledState[4]) + minColor) = 20;
+        //ledState[4].r = 127;
+        //ledState[4].g = 5;
     }
     if (level > 100)
     {
-        ledState[3].r = 127;
-        ledState[3].g = 5;
+        *((uint8_t *) (&ledState[3]) + majColor) = 127;
+        *((uint8_t *) (&ledState[3]) + minColor) = 25;
+        //ledState[3].r = 127;
+        //ledState[3].g = 10;
     }
     if (level > 75)
     {
-        ledState[2].r = 127;
-        ledState[2].g = 10;
+        *((uint8_t *) (&ledState[2]) + majColor) = 127;
+        *((uint8_t *) (&ledState[2]) + minColor) = 50;
+        //ledState[2].r = 127;
+        //ledState[2].g = 15;
     }
     if (level > 50)
     {
-        ledState[1].r = 127;
-        ledState[1].g = 15;
+        *((uint8_t *) (&ledState[1]) + majColor) = 127;
+        *((uint8_t *) (&ledState[1]) + minColor) = 75;
+        //ledState[1].r = 127;
+        //ledState[1].g = 20;
     }
     if (level > 0)
     {
-        ledState[0].r = 127;
-        ledState[0].g = 20;
+        *((uint8_t *) (&ledState[0]) + majColor) = 127;
+        *((uint8_t *) (&ledState[0]) + minColor) = 100;
+        //ledState[0].r = 127;
+        //ledState[0].g = 25;
     }
     setLeds();
 }
@@ -312,13 +350,14 @@ static void patternAudioCheck(void)
     {
         max = level;
         patternAudioLevel(max);
-        prev = timerGetUptime();
+        //prev = timerGetUptime();
     }
 
-    if (timerGetUptime() >= prev + TIME_150_MS)
+    if (timerGetUptime() >= prev + TIME_50_MS)
     {
         clearLeds();
         max = 0;
+        prev = timerGetUptime();
     }
 }
 
@@ -326,66 +365,39 @@ uint8_t levels[5] = {0, 100, 150, 200, 250};
 static void patternAudioMiddleOutLevel(uint16_t level)
 {
     clearLeds();
+    
+    uint8_t majColor = 0;
+    uint8_t minColor = 0;
+
+    switch (currColor)
+    {
+        case RED:
+            majColor = RED;
+            minColor = GREEN;
+        break;
+        case GREEN:
+            majColor = GREEN;
+            minColor = BLUE;
+        break;
+        case BLUE:
+            majColor = BLUE;
+            minColor = RED;
+        break;
+    }
 
     for (int i = 0; i < 5; i++)
     {
         if (level > levels[i])
         {
-            ledState[4 - i].r = 255;
-            ledState[4 - i].g = 40 - i * 9;
-            ledState[5 + i].r = 255;
-            ledState[5 + i].g = 40 - i * 9;
+            *((uint8_t *) (&ledState[4 - i]) + majColor) = 255;
+            *((uint8_t *) (&ledState[4 - i]) + minColor) = 128 - i * 32;
+            *((uint8_t *) (&ledState[5 + i]) + majColor) = 255;
+            *((uint8_t *) (&ledState[5 + i]) + minColor) = 128 - i * 32;
             _delay_ms(5);
             setLeds();
         }
     }
-    /*
-    if (level > 0)
-    {
-        ledState[4].r = 255;
-        ledState[4].g = 40;
-        ledState[5].r = 255;
-        ledState[5].g = 40;
-        _delay_ms(5);
-        setLeds();
-    }
-    if (level > 100)
-    {
-        ledState[3].r = 255;
-        ledState[3].g = 20;
-        ledState[6].r = 255;
-        ledState[6].g = 20;
-        _delay_ms(5);
-        setLeds();
-    }
-    if (level > 150)
-    {
-        ledState[2].r = 255;
-        ledState[2].g = 10;
-        ledState[7].r = 255;
-        ledState[7].g = 10;
-        _delay_ms(5);
-        setLeds();
-    }
-    if (level > 200)
-    {
-        ledState[1].r = 255;
-        ledState[1].g = 5;
-        ledState[8].r = 255;
-        ledState[8].g = 5;
-        _delay_ms(5);
-        setLeds();
-    }
-    if (level > 250)
-    {
-        ledState[0].r = 255;
-        ledState[0].g = 1;
-        ledState[9].r = 255;
-        ledState[9].g = 1;
-        _delay_ms(5);
-        setLeds();
-    }
-*/
+
     setLeds();
 }
 
@@ -403,7 +415,7 @@ static void patternAudioMiddleOut(void)
         prev = timerGetUptime();
     }
 
-    if (timerGetUptime() >= prev + TIME_150_MS)
+    if (timerGetUptime() >= prev + TIME_50_MS)
     {
         clearLeds();
         max = 0;
@@ -418,6 +430,26 @@ static void patternKnightRider(void)
     static uint32_t dt = 10;
     static uint8_t dir = 1;
     static uint8_t idx = 1;
+    
+    uint8_t majColor = 0;
+    uint8_t minColor = 0;
+
+    switch (currColor)
+    {
+        case RED:
+            majColor = RED;
+            minColor = GREEN;
+        break;
+        case GREEN:
+            majColor = GREEN;
+            minColor = BLUE;
+        break;
+        case BLUE:
+            majColor = BLUE;
+            minColor = RED;
+        break;
+    }
+
     uint16_t level = getAudioAdcVal();
 
     const uint32_t currTime = timerGetUptime();
@@ -437,11 +469,11 @@ static void patternKnightRider(void)
     if (currTime - prevAnim > dt)
     {
         clearLeds();
-        ledState[idx - 1].r = 200;
-        ledState[idx - 1].g = 10;
-        ledState[idx].r = 255;
-        ledState[idx + 1].r = 200;
-        ledState[idx + 1].g = 10;
+        *((uint8_t *) (&ledState[idx - 1]) + majColor) = 200;
+        *((uint8_t *) (&ledState[idx - 1]) + minColor) = 10;
+        *((uint8_t *) (&ledState[idx]) + majColor) = 255;
+        *((uint8_t *) (&ledState[idx + 1]) + majColor) = 200;
+        *((uint8_t *) (&ledState[idx + 1]) + minColor) = 10;
         if (idx == 8) dir = -1;
         if (idx == 1) dir = 1;
         idx += dir;
