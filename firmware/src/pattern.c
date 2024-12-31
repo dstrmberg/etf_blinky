@@ -165,7 +165,7 @@ bool patternBootSequence(void)
     {
         ledState[i].g = 1 + (i + 1) * 10;
         setLeds();
-        if (!BTNPWR_IS_PRESSED()) return false;
+        if (!btnIsPressed(BUTTON_PWR)) return false;
         _delay_ms(100);
     }
 
@@ -186,7 +186,7 @@ bool patternShutdownSequence(void)
     for (int i = NUM_LEDS - 1; i >= 0; i--)
     {
         ledState[i].r = 0;
-        if (!BTNPWR_IS_PRESSED())
+        if (!btnIsPressed(BUTTON_PWR))
         {
             clearLeds();
             setLeds();
@@ -203,7 +203,7 @@ bool patternShutdownSequence(void)
 /**
  * The practical maximum of the batteries are 5V (3 * 1.65).
  * This is being divided by 2 due to the resistor divider, thus we will
- * read max 2.5V at the ADC. This value is then shifted down by 2 
+ * read max 2.5V at the ADC. This value is then shifted down by 2
  * to fit into a uint8 variable.
  *
  * Thus, the maximum we will read is ca. 142, thus we set the upper limit around 130
@@ -365,7 +365,7 @@ uint8_t levels[5] = {0, 100, 150, 200, 250};
 static void patternAudioMiddleOutLevel(uint16_t level)
 {
     clearLeds();
-    
+
     uint8_t majColor = 0;
     uint8_t minColor = 0;
 
@@ -430,7 +430,7 @@ static void patternKnightRider(void)
     static uint32_t dt = 10;
     static uint8_t dir = 1;
     static uint8_t idx = 1;
-    
+
     uint8_t majColor = 0;
     uint8_t minColor = 0;
 

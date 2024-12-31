@@ -43,7 +43,7 @@ int main(void)
             case ST_IDLE:
                 if (ev.code == EV_BUTTON_PRESSED)
                 {
-                    if (BTN1_IS_PRESSED() && BTN2_IS_PRESSED())
+                    if (btnIsPressed(BUTTON1) && btnIsPressed(BUTTON2))
                     {
                         sys_batteryCheck();
                         _delay_ms(BATTERY_STATUS_SHOW_TIME);
@@ -178,9 +178,9 @@ int main(void)
                 break;
         }
 
-        if (ev.code == EV_BUTTON_ISR_DISABLED) btnEnableISR(ev.eventData);
+        if (ev.code == EV_BUTTON_ISR_DISABLED) btnEnableISR(true, ev.eventData);
 
-        if (BTNPWR_IS_PRESSED())
+        if (btnIsPressed(BUTTON_PWR))
         {
             if (patternShutdownSequence()) sys_powerOff();
         }
