@@ -117,15 +117,15 @@ bool btnIsPressed(enum button btn)
     switch (btn) {
         case BUTTON1:
             port = &PINB;
-            btn_mask = (1 << BTN1);
+            btn_mask = 1 << BTN1;
             break;
         case BUTTON2:
             port = &PINA;
-            btn_mask = (1 << BTN2);
+            btn_mask = 1 << BTN2;
             break;
         case BUTTON_PWR:
             port = &PINB;
-            btn_mask = (1 << BTN_PWR);
+            btn_mask = 1 << BTN_PWR;
             break;
         case NUM_BUTTONS:
             __builtin_unreachable();
@@ -146,11 +146,11 @@ void btnEnableISR(bool enable, enum button btn)
     switch (btn) {
         case BUTTON1:
             pcmsk = &PCMSK1;
-            btn_mask = BTN1;
+            btn_mask = 1 << BTN1;
             break;
         case BUTTON2:
             pcmsk = &PCMSK0;
-            btn_mask = BTN2;
+            btn_mask = 1 << BTN2;
             break;
         case BUTTON_PWR:
             __builtin_unreachable();
