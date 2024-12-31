@@ -24,9 +24,9 @@ enum eventCode
 // uint32_t timeToRun : 24;
 typedef struct
 {
-    enum eventCode code;
-    uint16_t eventData;
     uint32_t timeToRun;
+    uint16_t eventData;
+    enum eventCode code;
 } event_s;
 
 
