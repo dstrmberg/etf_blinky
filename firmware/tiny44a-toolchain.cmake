@@ -15,7 +15,7 @@ set(C_STD "-std=gnu99")
 set(C_WARN "-Wall -Wextra -Wshadow -Wdouble-promotion -fno-common")
 set(C_OPT "-Os -ffunction-sections -fdata-sections -Wl,--gc-sections -fpack-struct -fshort-enums -mcall-prologues -flto")
 set(C_DEBUG "-Og -ggdb -gdwarf-3")
-set(C_DIAG "-fdiagnostics-color=always -Wl,-Map=output.map")
+set(C_DIAG "-fdiagnostics-color=always -Wl,-Map=output.map -fcallgraph-info=su -fstack-usage -Wstack-usage=20")
 
 set(CMAKE_C_FLAGS_RELEASE "${C_MCU} ${C_STD} ${C_WARN} ${C_OPT} ${C_DIAG}")
 set(CMAKE_C_FLAGS_DEBUG "${C_MCU} ${C_STD} ${C_WARN} ${C_DEBUG} ${C_DIAG}")
