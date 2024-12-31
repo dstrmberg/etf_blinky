@@ -96,6 +96,8 @@ static bool evSchedule(event_s ev, uint32_t delay, enum scheduleMode mode)
         case RESCHEDULE:
             g_eventQueue[g_nextFreeEvent].timeToRun = ev.timeToRun;
             break;
+        default:
+            __builtin_unreachable();
     }
     g_nextFreeEvent = (g_nextFreeEvent + 1) % DL_MAX_EVENTS;
 

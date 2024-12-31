@@ -67,8 +67,10 @@ static void staticColorRed(void)
             case BLUE:
                 ledState[i].b = 255;
                 break;
+            case COLOR_MAX:
+                __builtin_unreachable();
             default:
-                break;
+                __builtin_unreachable();
         }
     }
     setLeds();
@@ -247,6 +249,10 @@ static void patternAudioLevel(uint16_t level)
             majColor = BLUE;
             minColor = RED;
         break;
+        case COLOR_MAX:
+            __builtin_unreachable();
+        default:
+            __builtin_unreachable();
     }
 
     if (level > 250)
@@ -383,6 +389,10 @@ static void patternAudioMiddleOutLevel(uint16_t level)
             majColor = BLUE;
             minColor = RED;
         break;
+        case COLOR_MAX:
+            __builtin_unreachable();
+        default:
+            __builtin_unreachable();
     }
 
     for (int i = 0; i < 5; i++)
@@ -448,6 +458,10 @@ static void patternKnightRider(void)
             majColor = BLUE;
             minColor = RED;
         break;
+        case COLOR_MAX:
+            __builtin_unreachable();
+        default:
+            __builtin_unreachable();
     }
 
     uint16_t level = getAudioAdcVal();
