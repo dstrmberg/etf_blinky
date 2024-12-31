@@ -37,7 +37,7 @@ void evInit(void);
  * The delay time shall be the ones defined in the timer.h file,
  * such as TIMER_NOW, TIMER_100_MS etc.
  */
-bool evAdd(event_s ev, uint32_t delay);
+bool evAdd(event_s* ev, uint32_t* delay);
 
 /**
  * The event handler.

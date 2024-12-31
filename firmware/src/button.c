@@ -5,6 +5,7 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <util/delay.h>
 
 // NOTE(dist): Use this macro to toggle between "branchless" and switch-statement
@@ -83,14 +84,14 @@ static inline void btn_handler(enum button btn)
     } else {
         ev.code = EV_BUTTON_RELEASED;
     }
-    evAdd(ev, TIME_50_MS);
+    (void)evAdd(&ev, &(uint32_t){TIME_50_MS});
 
     // NOTE(noxet): There is a possible HW bug where we get multiple interrupt on BTN2.
     // possibly due to slow decay from debounce filter together with SPI being routed too close.
     btnEnableISR(false, btn);
 
     ev.code = EV_BUTTON_ISR_DISABLED;
-    evAdd(ev, TIME_50_MS);
+    (void)evAdd(&ev, &(uint32_t){TIME_50_MS});
 }
 
 ISR(BTN1_INTERRUPT)
@@ -178,14 +179,14 @@ static inline void btn_handler(enum button btn)
     } else {
         ev.code = EV_BUTTON_RELEASED;
     }
-    evAdd(ev, TIME_50_MS);
+    (void)evAdd(&ev, &(uint32_t){TIME_50_MS});
 
     // NOTE(noxet): There is a possible HW bug where we get multiple interrupt on BTN2.
     // possibly due to slow decay from debounce filter together with SPI being routed too close.
     btnEnableISR(false, btn);
 
     ev.code = EV_BUTTON_ISR_DISABLED;
-    evAdd(ev, TIME_50_MS);
+    (void)evAdd(&ev, &(uint32_t){TIME_50_MS});
 }
 
 ISR(BTN1_INTERRUPT)
